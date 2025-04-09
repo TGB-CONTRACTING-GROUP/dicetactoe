@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
+    android:layout_marginTop="16dp">  <!--android:padding="16dp"-->
+
+    <!-- Game Board Column -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/game_board"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <GridLayout
+            android:id="@+id/game_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rowCount="3"
+            android:columnCount="3"
+            android:layout_marginTop="8dp">
+        </GridLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dice_results"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/dice_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/game_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <!-- Controls Column -->
+    <ScrollView
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/game_controls"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/roll_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/roll_dice"
+                android:backgroundTint="@color/primaryColor"
+                android:layout_marginTop="8dp"/>
+
+            <Button
+                android:id="@+id/skip_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/skip_rolls"
+                android:backgroundTint="@color/warningColor"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/current_player"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/current_player_template"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/rolls_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rolls_left_template"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/dice_combo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/placement_rule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/keep_dice_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/new_game"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/new_game"
+                    android:backgroundTint="@color/successColor"/>
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/toggle_hints"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/adv"
+                    android:backgroundTint="@color/infoColor"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Hints Panel -->
+            <LinearLayout
+                android:id="@+id/hints_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/hintBackground"
+                android:padding="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/game_hints"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <!-- Dice Combinations List -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dice_combinations"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:id="@+id/dice_combinations_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"/>
+
+                <!-- Placement Rules Grid -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placement_rules"
+                    android:textSize="16sp"
+                    android:layout_marginTop="16dp"/>
+
+                <GridLayout
+                    android:id="@+id/rules_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rowCount="3"
+                    android:columnCount="3"
+                    android:layout_marginTop="8dp">
+                </GridLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

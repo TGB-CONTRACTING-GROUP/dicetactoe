@@ -1,0 +1,20 @@
+<resources>
+<string name="app_name">DiceTacToe</string>
+<!-- Game Board Section -->
+<string name="game_board">Game Board</string>
+<string name="dice_results">Dice Results</string>
+<string name="game_controls">Game Controls</string>
+<string name="game_hints">Game Hints</string>
+<string name="dice_combinations">Dice Combinations:</string>
+<string name="placement_rules">Placement Rules:</string>
+
+<!-- Buttons -->
+<string name="roll_dice">Roll Dice</string>
+<string name="skip_rolls">Skip Rolls</string>
+<string name="new_game">New Game</string>
+<string name="adv">ADV</string>
+
+<!-- Dynamic Strings (Templates) -->
+<string name="current_player_template">Current Player: %s</string>
+<string name="rolls_left_template">Rolls Left: %d</string>
+</resources>
