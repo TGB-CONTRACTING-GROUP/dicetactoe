@@ -3,16 +3,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <!--android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:baselineAligned="false"
-    android:layout_marginTop="16dp">  <!--android:padding="16dp"-->
+    android:layout_marginTop="16dp">  android:padding="16dp"-->
+
+
 
     <!-- Game Board Column -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="top">
+        <!--android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"> -->
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,9 +67,13 @@
 
     <!-- Controls Column -->
     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <!--
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="16dp"> -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,6 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/skip_rolls"
+                android:enabled="false"
                 android:backgroundTint="@color/warningColor"
                 android:layout_marginTop="8dp"/>
 

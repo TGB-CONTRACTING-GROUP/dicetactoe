@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -113,12 +114,21 @@ public class MainActivity extends AppCompatActivity {
             cell.setText(gameEngine.getCellValue(row, col));
         }
 
-        // Update other UI elements
-        //currentPlayerText.setText("Current Player: " + gameEngine.getCurrentPlayer());
+        // current player display
         currentPlayerText.setText(
                 getString(R.string.current_player_template, gameEngine.getCurrentPlayer())
         );
-        rollsLeftText.setText("Rolls Left: " + gameEngine.getRollsLeft());
+
+        // Update skip button state
+        Button skipBtn = (Button) findViewById(R.id.skip_btn);
+        boolean enableSkip = gameEngine.hasDiceRolled() && gameEngine.getRollsLeft() > 0;
+        skipBtn.setEnabled(enableSkip);
+
+        //Update rolls left display
+        rollsLeftText.setText(
+                getString(R.string.rolls_left_template, gameEngine.getRollsLeft())
+        );
+        //rollsLeftText.setText("Rolls Left: " + gameEngine.getRollsLeft());
         diceComboText.setText(gameEngine.getCurrentCombination());
         placementRuleText.setText(gameEngine.getPlacementRule());
 
@@ -152,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
     private void setupButtonListeners() {
         findViewById(R.id.roll_btn).setOnClickListener(v -> {
             gameEngine.rollDice();
-            updateDiceDisplay();
             updateBoardState();
+            updateDiceDisplay();
         });
 
         findViewById(R.id.skip_btn).setOnClickListener(v -> {
@@ -165,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             gameEngine.newGame();
             updateBoardState();
             updateDiceDisplay();
+            findViewById(R.id.skip_btn).setEnabled(false); // Disable on new game
         });
 
         findViewById(R.id.toggle_hints).setOnClickListener(v -> {

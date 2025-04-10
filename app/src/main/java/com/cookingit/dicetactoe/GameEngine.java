@@ -271,12 +271,17 @@ public class GameEngine {
 
     // Skips rolls when the "Skip Rolls" button is clicked
     public void skipRolls() {
+        rollsLeft = 0;  // Set rolls left to 0
         validPositions = getValidPositions();
         if (validPositions.isEmpty()) {
             showNoMovesDialog();
         } else {
             gameState = GameState.PLACING;
         }
+    }
+
+    public boolean hasDiceRolled() {
+        return diceRolled;
     }
 
     public void newGame() {
