@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "661020470192",
+    "project_id": "dicetactoe",
+    "storage_bucket": "dicetactoe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661020470192:android:0dc8d0647dc975ca2d0475",
+        "android_client_info": {
+          "package_name": "com.cookingit.dicetactoe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm84bE4wYxeud_J7mMf33TcO4hL92aEpc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
