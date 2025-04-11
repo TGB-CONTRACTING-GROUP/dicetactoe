@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateBoardState() {
+    public void updateBoardState() {
         // Update all game board cells
         for(int i = 0; i < 9; i++) {
             TextView cell = (TextView) gameBoard.getChildAt(i);

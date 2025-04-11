@@ -1,5 +1,7 @@
 package com.cookingit.dicetactoe;
 
+import com.cookingit.dicetactoe.firebase.GameManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -297,6 +299,25 @@ public class GameEngine {
         Arrays.fill(keptDice, false); // Initialize dice keeping status
     }
 
+    // Modify existing methods to return game state
+    /*public GameState getGameState() {
+        GameState state = new GameState();
+        state.board = this.board;
+        state.currentPlayer = this.currentPlayer;
+        state.dice = this.dice;
+        state.currentCombo = this.currentCombo;
+        return state;
+    }*/
+
+    // ********** Firebase **********
+    // Add to GameEngine class
+    public void syncWithRemote(GameManager remoteState) {
+        this.board = remoteState.board;
+        this.currentPlayer = remoteState.currentPlayer;
+        this.dice = remoteState.dice;
+        this.currentCombo = remoteState.currentCombo;
+        // Add other necessary field updates
+    }
     /*public void newGame() {
         board = new String[3][3];
         currentPlayer = "X";
