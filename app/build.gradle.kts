@@ -45,6 +45,8 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    implementation(libs.androidx.appcompat)
+
     // ********** Firebase  **********
     // Import the Firebase BoM
     //implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
