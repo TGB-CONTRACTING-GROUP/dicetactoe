@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.cookingit.dicetactoe"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -40,17 +40,25 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    implementation(libs.androidx.appcompat)
+
     // ********** Firebase  **********
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    //implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
-    implementation("com.google.firebase:firebase-analytics")
+    //implementation("com.google.firebase:firebase-analytics")
 
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
+    //implementation("com.google.firebase:firebase-auth") //:21.2.0' // Check for latest version
+    //implementation 'com.google.firebase:firebase-auth'
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.analytics)
 }
