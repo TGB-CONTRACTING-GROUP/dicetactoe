@@ -7,6 +7,7 @@ appcompat = "1.7.0"
 material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
+androidx-gridlayout = "1.0.0"
 firebaseDatabase = "21.0.0"
 firebase-bom = "33.12.0"
 
@@ -19,6 +20,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
+androidx-gridlayout = { module = "androidx.gridlayout:gridlayout", version.ref = "androidx-gridlayout" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # Firebase BoM (Bill of Materials)

@@ -16,10 +16,10 @@ import com.google.firebase.database.*;
 
 public class FirebaseManager {
     private final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-    private GameEngine gameEngine;
-    private MainActivity activity;
+    private final GameEngine gameEngine;
+    private final MainActivity activity;
     private String gameId;
-    private String playerId;
+    private final String playerId;
 
     public FirebaseManager(MainActivity activity, GameEngine gameEngine) {
         this.activity = activity;

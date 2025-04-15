@@ -47,6 +47,8 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
 
+    implementation(libs.androidx.gridlayout)
+
     // ********** Firebase  **********
     // Import the Firebase BoM
     //implementation(platform("com.google.firebase:firebase-bom:33.12.0"))

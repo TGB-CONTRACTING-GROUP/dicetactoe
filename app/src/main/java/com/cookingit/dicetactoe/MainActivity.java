@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.GridLayout;
+//import android.widget.GridLayout;
+import androidx.gridlayout.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Button;
@@ -30,20 +31,22 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private GameEngine gameEngine;
-    private GridLayout gameBoard;
+    //private GridLayout gameBoard;
+    androidx.gridlayout.widget.GridLayout gameBoard;    // = findViewById(R.id.game_board);
     private LinearLayout diceContainer;
     private TextView currentPlayerText, diceComboText, placementRuleText;
     private FirebaseManager firebaseManager;
     private boolean isOnlineMode = false;
-    private boolean isMyTurn = false;
+    private final boolean isMyTurn = false;
     private TextView playerXScoreText, playerOScoreText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        gameBoard = findViewById(R.id.game_board);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseAuth.getInstance().signInAnonymously();
-        setContentView(R.layout.activity_main);
 
         gameEngine = new GameEngine();
         initializeUIComponents();

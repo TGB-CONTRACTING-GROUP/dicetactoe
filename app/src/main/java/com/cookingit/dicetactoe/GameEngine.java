@@ -34,10 +34,10 @@ public class GameEngine {
     private List<int[]> validPositions = new ArrayList<>();
     private String currentCombo = "";
     private boolean hintsVisible = true;
-    private boolean[] keptDice = new boolean[5];
+    private final boolean[] keptDice = new boolean[5];
     private int playerXScore = 0;
     private int playerOScore = 0;
-    private boolean waitingForConfirmation = false;
+    private final boolean waitingForConfirmation = false;
 
     private final Map<String, String> diceCombinations = new HashMap<String, String>() {{
         put("five_of_a_kind", "Any square");

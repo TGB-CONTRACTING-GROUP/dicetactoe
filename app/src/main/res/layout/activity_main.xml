@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -91,15 +92,44 @@
         android:gravity="center_horizontal"
         android:background="@color/gameBoardBackground">
 
-        <GridLayout
+<!--        <androidx.gridlayout.widget.GridLayout-->
+<!--            android:id="@+id/game_board"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:rowCount="3"-->
+<!--            android:columnCount="3"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            android:layout_rowSpacing="8dp"-->
+<!--            android:layout_columnSpacing="8dp">-->
+<!--        </androidx.gridlayout.widget.GridLayout>-->
+
+        <androidx.gridlayout.widget.GridLayout
             android:id="@+id/game_board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rowCount="3"
-            android:columnCount="3"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp">
-        </GridLayout>
+            android:layout_marginTop="24dp"
+            app:rowCount="3"
+            app:columnCount="3">
+
+<!--                    app:columnSpacing="8dp"-->
+<!--                    app:rowSpacing="8dp">-->
+        </androidx.gridlayout.widget.GridLayout>
+
+<!--        <GridLayout-->
+<!--            android:id="@+id/game_board"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:rowCount="3"-->
+<!--            android:columnCount="3"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="24dp"-->
+
+<!--            android:columnSpacing="8dp">-->
+<!--            &lt;!&ndash;            android:layout_rowSpacing="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_columnSpacing="8dp">&ndash;&gt;-->
+<!--        </GridLayout>-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -174,7 +204,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="0dp"
         android:background="@color/controlBackground">
 
         <Button
