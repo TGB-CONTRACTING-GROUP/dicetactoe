@@ -1,210 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent"
-   android:orientation="vertical"
-   android:padding="8dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
 
+    <!-- Game Score -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@color/gameScoreBackground">
 
-   <!-- Game Board Column -->
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="1"
-       android:orientation="vertical"
-       android:gravity="center_horizontal">   <!-- android:gravity="top"> -->
+        <!-- Player X Section -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/player_x_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Player X"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/player_x_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/game_board"
-           android:textSize="20sp"
-           android:textStyle="bold"
-           android:layout_gravity="center_horizontal"/>
+        <!-- Player O Section -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/player_o_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Player O"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/player_o_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
+    </LinearLayout>
 
-       <GridLayout
-           android:id="@+id/game_board"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:rowCount="3"
-           android:columnCount="3"
-           android:layout_gravity="center_horizontal"
-           android:layout_marginTop="4dp">
-       </GridLayout>
+    <!-- Game Status Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@color/gameScoreBackground">
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/dice_results"
-           android:textSize="20sp"
-           android:textStyle="bold"
-           android:layout_marginTop="8dp"
-           android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/current_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Player X’s turn – 3 rolls left"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/> <!-- Changed to white -->
+    </LinearLayout>
 
-       <LinearLayout
-           android:id="@+id/dice_container"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:gravity="center"
-           android:layout_marginTop="4dp">
-       </LinearLayout>
+    <!-- Game Board Column -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/gameBoardBackground">
 
-       <TextView
-       android:id="@+id/game_status"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="16dp"
-       android:textSize="16sp"/>
-   </LinearLayout>
+        <GridLayout
+            android:id="@+id/game_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rowCount="3"
+            android:columnCount="3"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp">
+        </GridLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dice_results"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"/>
 
-   <!-- Controls Column -->
-   <ScrollView
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="1.2"
-       android:overScrollMode="never">
+        <TextView
+            android:id="@+id/dice_instruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll the dice to start the game"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="center_horizontal"/>
 
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="vertical"
-           android:paddingTop="4dp"> <!-- Reduced padding -->
+        <LinearLayout
+            android:id="@+id/dice_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="4dp">
+        </LinearLayout>
 
+        <!-- Current Player, Dice, Placement Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center">
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/game_controls"
-               android:textSize="20sp"
-               android:textStyle="bold"
-               android:layout_marginTop="4dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Current Player: X"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="#000000"/>
 
-           <Button
-               android:id="@+id/roll_btn"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="@string/roll_dice"
-               android:backgroundTint="@color/primaryColor"
-               android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/dice_combo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Dice: –"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="#000000"/>
 
-           <Button
-               android:id="@+id/skip_btn"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="@string/skip_rolls"
-               android:enabled="false"
-               android:backgroundTint="@color/warningColor"
-               android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/placement_rule"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Placement: –"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
+    </LinearLayout>
 
-           <TextView
-               android:id="@+id/current_player"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginTop="8dp"
-               android:text="@string/current_player_template"
-               android:textSize="16sp"/>
+    <!-- Controls Column -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@color/controlBackground">
 
+        <Button
+            android:id="@+id/toggle_hints"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="More"
+            android:backgroundTint="@color/controlBackground"
+            android:textColor="#FFFFFF"/>
 
-           <TextView
-               android:id="@+id/rolls_left"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/rolls_left_template"
-               android:layout_marginTop="4dp"
-               android:textSize="16sp"/>
+        <Button
+            android:id="@+id/new_game"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="New Game"
+            android:backgroundTint="@color/controlBackground"
+            android:textColor="#FFFFFF"/>
 
+        <Button
+            android:id="@+id/roll_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Roll Dice"
+            android:backgroundTint="@color/roll_dice_purple"/>
 
-           <TextView
-               android:id="@+id/dice_combo"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginTop="16dp"
-               android:textSize="16sp"/>
+        <Button
+            android:id="@+id/skip_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Skip Rolls"
+            android:backgroundTint="@color/controlBackground"
+            android:textColor="#FFFFFF"/>
 
-
-           <TextView
-               android:id="@+id/placement_rule"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:textSize="16sp"
-               android:layout_marginTop="8dp"/>
-
-
-           <LinearLayout
-               android:id="@+id/keep_dice_container"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="vertical"
-               android:layout_marginTop="16dp">
-           </LinearLayout>
-
-
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="horizontal"
-               android:layout_marginTop="16dp">
-
-
-               <Button
-                   style="?android:attr/buttonBarButtonStyle"
-                   android:id="@+id/new_game"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="1"
-                   android:text="@string/new_game"
-                   android:backgroundTint="@color/successColor"/>
-
-
-               <Button
-                   style="?android:attr/buttonBarButtonStyle"
-                   android:id="@+id/toggle_hints"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="1"
-                   android:text="@string/adv"
-                   android:backgroundTint="@color/infoColor"
-                   android:layout_marginStart="8dp"/>
-           </LinearLayout>
-
-
-           <!-- Hints Panel -->
-           <LinearLayout
-               android:id="@+id/hints_panel"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="vertical"
-               android:background="@color/hintBackground"
-               android:padding="8dp"
-               android:layout_marginTop="8dp">
-
-
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="@string/game_hints"
-                   android:textSize="18sp"
-                   android:textStyle="bold"/>
-
-               <!-- Dice Combinations List -->
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="@string/dice_combinations"
-                   android:textSize="14sp"
-                   android:layout_marginTop="4dp"/>
-
-
-               <TextView
-                   android:id="@+id/dice_combinations_list"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:textSize="14sp"
-                   android:layout_marginTop="4dp"/>
-           </LinearLayout>
-       </LinearLayout>
-   </ScrollView>
+        <Button
+            android:id="@+id/next_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Next"
+            android:backgroundTint="@color/controlBackground"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
  </LinearLayout>
