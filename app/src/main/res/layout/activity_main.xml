@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@color/gameBoardBackground">
 
     <!-- Game Score -->
     <LinearLayout
@@ -80,7 +81,7 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"/> <!-- Changed to white -->
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <!-- Game Board Column -->
@@ -92,18 +93,6 @@
         android:gravity="center_horizontal"
         android:background="@color/gameBoardBackground">
 
-<!--        <androidx.gridlayout.widget.GridLayout-->
-<!--            android:id="@+id/game_board"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:rowCount="3"-->
-<!--            android:columnCount="3"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:layout_rowSpacing="8dp"-->
-<!--            android:layout_columnSpacing="8dp">-->
-<!--        </androidx.gridlayout.widget.GridLayout>-->
-
         <androidx.gridlayout.widget.GridLayout
             android:id="@+id/game_board"
             android:layout_width="wrap_content"
@@ -112,24 +101,7 @@
             android:layout_marginTop="24dp"
             app:rowCount="3"
             app:columnCount="3">
-
-<!--                    app:columnSpacing="8dp"-->
-<!--                    app:rowSpacing="8dp">-->
         </androidx.gridlayout.widget.GridLayout>
-
-<!--        <GridLayout-->
-<!--            android:id="@+id/game_board"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:rowCount="3"-->
-<!--            android:columnCount="3"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_marginTop="24dp"-->
-
-<!--            android:columnSpacing="8dp">-->
-<!--            &lt;!&ndash;            android:layout_rowSpacing="8dp"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_columnSpacing="8dp">&ndash;&gt;-->
-<!--        </GridLayout>-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -157,45 +129,114 @@
             android:gravity="center"
             android:layout_marginTop="4dp">
         </LinearLayout>
+    </LinearLayout>
 
-        <!-- Current Player, Dice, Placement Info -->
+    <!-- Current Player, Dice, Placement Info -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/rounded_top_corners"
+        android:gravity="center">
+
+        <!-- Current Player Column -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF"
+            android:layout_weight="1"
+            android:orientation="vertical"
             android:gravity="center">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Current Player: X"
-                android:gravity="center"
+                android:text="Current Player"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/current_player_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
                 android:textSize="14sp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Vertical Divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#CCCCCC"
+            android:layout_marginHorizontal="4dp"/>
+
+        <!-- Dice Combination Column -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dice Combination"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:textStyle="bold"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/dice_combo"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Dice: –"
-                android:gravity="center"
-                android:textSize="14sp"
+                android:text=" - "
+                android:textSize="12sp"
                 android:textColor="#000000"/>
+        </LinearLayout>
+
+        <!-- Vertical Divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#CCCCCC"
+            android:layout_marginHorizontal="4dp"/>
+
+        <!-- Placement Rule Column -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Placement"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:textStyle="bold"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/placement_rule"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Placement: –"
-                android:gravity="center"
-                android:textSize="14sp"
-                android:textColor="#000000"/>
+                android:text=" - "
+                android:textSize="12sp"
+                android:textColor="#000000"
+                android:maxLines="2"
+                android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -251,4 +292,1453 @@
             android:backgroundTint="@color/controlBackground"
             android:textColor="#FFFFFF"/>
     </LinearLayout>
- </LinearLayout>
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="8dp"-->
+<!--    android:background="@color/gameBoardBackground">-->
+
+<!--    &lt;!&ndash; Game Score &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        &lt;!&ndash; Player X Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player X"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Player O Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player O"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Status Row &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/current_player"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Player X’s turn – 3 rolls left"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textStyle="bold"/>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Board Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:background="@color/gameBoardBackground">-->
+
+<!--        <androidx.gridlayout.widget.GridLayout-->
+<!--            android:id="@+id/game_board"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:rowCount="3"-->
+<!--            app:columnCount="3">-->
+<!--        </androidx.gridlayout.widget.GridLayout>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/dice_results"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/dice_instruction"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Roll the dice to start the game"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/dice_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_marginTop="4dp">-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    -->
+
+<!--    &lt;!&ndash; Current Player, Dice, Placement Info &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="32dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginBottom="4dp"-->
+<!--        android:layout_marginHorizontal="16dp"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:background="@drawable/rounded_top_corners"-->
+<!--        android:gravity="center">-->
+
+<!--        &lt;!&ndash; Current Player Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Current Player"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/current_player_indicator"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="X"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="#000000"-->
+<!--                android:textStyle="bold"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:background="#CCCCCC"-->
+<!--            android:layout_marginHorizontal="4dp"/>-->
+
+<!--        &lt;!&ndash; Dice Combination Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Dice Combination"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/dice_combo"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Two Pair"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:background="#CCCCCC"-->
+<!--            android:layout_marginHorizontal="4dp"/>-->
+
+<!--        &lt;!&ndash; Placement Rule Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Placement"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/placement_rule"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Any corner square"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#000000"-->
+<!--                android:maxLines="2"-->
+<!--                android:gravity="center"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Controls Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:background="@color/controlBackground">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/toggle_hints"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="More"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/new_game"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="New Game"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/roll_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Roll Dice"-->
+<!--            android:backgroundTint="@color/roll_dice_purple"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/skip_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Skip Rolls"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/next_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Next"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+
+
+
+
+
+
+<!--********************************************************************************-->
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="8dp">-->
+
+<!--    &lt;!&ndash; Game Score &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        &lt;!&ndash; Player X Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player X"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Player O Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player O"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Status Row &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/current_player"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Player X’s turn – 3 rolls left"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textStyle="bold"/>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Board Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:background="@color/gameBoardBackground">-->
+
+<!--        <androidx.gridlayout.widget.GridLayout-->
+<!--            android:id="@+id/game_board"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:rowCount="3"-->
+<!--            app:columnCount="3">-->
+<!--        </androidx.gridlayout.widget.GridLayout>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/dice_results"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/dice_instruction"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Roll the dice to start the game"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/dice_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_marginTop="4dp">-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Current Player, Dice, Placement Info &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginBottom="4dp"-->
+<!--        android:background="@drawable/rounded_top_corners"-->
+<!--        android:gravity="center">-->
+
+<!--        &lt;!&ndash; Current Player Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Current Player"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/current_player_indicator"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="X"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="#000000"-->
+<!--                android:textStyle="bold"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:background="#CCCCCC"-->
+<!--            android:layout_marginHorizontal="4dp"/>-->
+
+<!--        &lt;!&ndash; Dice Combination Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Dice Combination"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/dice_combo"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Two Pair"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:background="#CCCCCC"-->
+<!--            android:layout_marginHorizontal="4dp"/>-->
+
+<!--        &lt;!&ndash; Placement Rule Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Placement"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/placement_rule"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Any corner square"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#000000"-->
+<!--                android:maxLines="2"-->
+<!--                android:gravity="center"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Controls Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:background="@color/controlBackground">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/toggle_hints"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="More"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/new_game"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="New Game"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/roll_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Roll Dice"-->
+<!--            android:backgroundTint="@color/roll_dice_purple"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/skip_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Skip Rolls"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/next_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Next"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+
+
+
+
+
+
+<!--***********************************************************************-->
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="8dp">-->
+
+<!--    &lt;!&ndash; Game Score &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        &lt;!&ndash; Player X Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player X"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Player O Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player O"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Status Row &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/current_player"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Player X’s turn – 3 rolls left"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textStyle="bold"/>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Board Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:background="@color/gameBoardBackground">-->
+
+<!--        <androidx.gridlayout.widget.GridLayout-->
+<!--            android:id="@+id/game_board"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:rowCount="3"-->
+<!--            app:columnCount="3">-->
+<!--        </androidx.gridlayout.widget.GridLayout>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/dice_results"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/dice_instruction"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Roll the dice to start the game"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/dice_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_marginTop="4dp">-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Current Player, Dice, Placement Info &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginBottom="4dp"-->
+<!--        android:background="#FFFFFF"-->
+<!--        android:gravity="center">-->
+
+<!--        &lt;!&ndash; Current Player Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Current Player"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/current_player_indicator"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="X"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="#000000"-->
+<!--                android:textStyle="bold"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:background="#CCCCCC"-->
+<!--            android:layout_marginHorizontal="4dp"/>-->
+
+<!--        &lt;!&ndash; Dice Combination Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Dice Combination"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/dice_combo"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Two Pair"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:background="#CCCCCC"-->
+<!--            android:layout_marginHorizontal="4dp"/>-->
+
+<!--        &lt;!&ndash; Placement Rule Column &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Placement"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textColor="#666666"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/placement_rule"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Any corner square"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="#000000"-->
+<!--                android:maxLines="2"-->
+<!--                android:gravity="center"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Controls Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:background="@color/controlBackground">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/toggle_hints"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="More"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/new_game"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="New Game"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/roll_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Roll Dice"-->
+<!--            android:backgroundTint="@color/roll_dice_purple"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/skip_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Skip Rolls"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/next_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Next"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+
+
+
+
+<!--*******************************************************************************-->
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="8dp">-->
+
+<!--    &lt;!&ndash; Game Score &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        &lt;!&ndash; Player X Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player X"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Player O Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player O"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Status Row &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/current_player"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Player X’s turn – 3 rolls left"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textStyle="bold"/>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Board Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:background="@color/gameBoardBackground">-->
+
+<!--        <androidx.gridlayout.widget.GridLayout-->
+<!--            android:id="@+id/game_board"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:rowCount="3"-->
+<!--            app:columnCount="3">-->
+<!--        </androidx.gridlayout.widget.GridLayout>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/dice_results"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/dice_instruction"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Roll the dice to start the game"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/dice_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_marginTop="4dp">-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Current Player, Dice, Placement Info &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="8dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:background="#FFFFFF"-->
+<!--            android:gravity="center">-->
+
+<!--            &lt;!&ndash; Current Player Column &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical"-->
+<!--                android:gravity="center">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Current Player"-->
+<!--                    android:textSize="10sp"-->
+<!--                    android:textColor="#666666"-->
+<!--                    android:textStyle="bold"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/current_player_indicator"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="X"-->
+<!--                    android:textSize="14sp"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textStyle="bold"/>-->
+<!--            </LinearLayout>-->
+
+<!--            &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--            <View-->
+<!--                android:layout_width="1dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:background="#CCCCCC"-->
+<!--                android:layout_marginHorizontal="4dp"/>-->
+
+<!--            &lt;!&ndash; Dice Combination Column &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical"-->
+<!--                android:gravity="center">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Dice Combination"-->
+<!--                    android:textSize="10sp"-->
+<!--                    android:textColor="#666666"-->
+<!--                    android:textStyle="bold"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/dice_combo"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Two Pair"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:textColor="#000000"/>-->
+<!--            </LinearLayout>-->
+
+<!--            &lt;!&ndash; Vertical Divider &ndash;&gt;-->
+<!--            <View-->
+<!--                android:layout_width="1dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:background="#CCCCCC"-->
+<!--                android:layout_marginHorizontal="4dp"/>-->
+
+<!--            &lt;!&ndash; Placement Rule Column &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical"-->
+<!--                android:gravity="center">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Placement"-->
+<!--                    android:textSize="10sp"-->
+<!--                    android:textColor="#666666"-->
+<!--                    android:textStyle="bold"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/placement_rule"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Any corner square"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:maxLines="2"-->
+<!--                    android:gravity="center"/>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Controls Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:background="@color/controlBackground">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/toggle_hints"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="More"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/new_game"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="New Game"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/roll_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Roll Dice"-->
+<!--            android:backgroundTint="@color/roll_dice_purple"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/skip_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Skip Rolls"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/next_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Next"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+
+
+
+
+
+
+
+<!--*************************************************************************************-->
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="8dp">-->
+
+<!--    &lt;!&ndash; Game Score &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        &lt;!&ndash; Player X Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player X"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_x_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Player O Section &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center">-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_label"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Player O"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/player_o_score"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="0"-->
+<!--                android:textSize="24sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Status Row &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="8dp"-->
+<!--        android:background="@color/gameScoreBackground">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/current_player"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Player X’s turn – 3 rolls left"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textStyle="bold"/> &lt;!&ndash; Changed to white &ndash;&gt;-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Game Board Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:background="@color/gameBoardBackground">-->
+
+<!--&lt;!&ndash;        <androidx.gridlayout.widget.GridLayout&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/game_board"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:rowCount="3"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:columnCount="3"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_gravity="center_horizontal"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="24dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_rowSpacing="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_columnSpacing="8dp">&ndash;&gt;-->
+<!--&lt;!&ndash;        </androidx.gridlayout.widget.GridLayout>&ndash;&gt;-->
+
+<!--        <androidx.gridlayout.widget.GridLayout-->
+<!--            android:id="@+id/game_board"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:rowCount="3"-->
+<!--            app:columnCount="3">-->
+
+<!--&lt;!&ndash;                    app:columnSpacing="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    app:rowSpacing="8dp">&ndash;&gt;-->
+<!--        </androidx.gridlayout.widget.GridLayout>-->
+
+<!--&lt;!&ndash;        <GridLayout&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/game_board"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:rowCount="3"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:columnCount="3"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_gravity="center_horizontal"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="24dp"&ndash;&gt;-->
+
+<!--&lt;!&ndash;            android:columnSpacing="8dp">&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;            android:layout_rowSpacing="8dp"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            android:layout_columnSpacing="8dp">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        </GridLayout>&ndash;&gt;-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/dice_results"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/dice_instruction"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Roll the dice to start the game"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/dice_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_marginTop="4dp">-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Current Player, Dice, Placement Info &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="8dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:background="#FFFFFF"-->
+<!--            android:gravity="center">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Current Player: X"-->
+<!--                android:gravity="center"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="#000000"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/dice_combo"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Dice: –"-->
+<!--                android:gravity="center"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="#000000"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/placement_rule"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Placement: –"-->
+<!--                android:gravity="center"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="#000000"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Controls Column &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:background="@color/controlBackground">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/toggle_hints"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="More"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/new_game"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="New Game"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/roll_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Roll Dice"-->
+<!--            android:backgroundTint="@color/roll_dice_purple"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/skip_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Skip Rolls"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/next_btn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Next"-->
+<!--            android:backgroundTint="@color/controlBackground"-->
+<!--            android:textColor="#FFFFFF"/>-->
+<!--    </LinearLayout>-->
+<!-- </LinearLayout>-->

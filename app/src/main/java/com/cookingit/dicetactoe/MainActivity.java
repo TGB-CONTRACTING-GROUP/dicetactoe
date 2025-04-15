@@ -256,8 +256,10 @@ public class MainActivity extends AppCompatActivity {
         skipBtn.setEnabled(enableSkip);
 
         // Update dice combo and placement rule
-        diceComboText.setText("Dice: " + (gameEngine.getCurrentCombination().isEmpty() ? "–" : gameEngine.getCurrentCombination()));
-        placementRuleText.setText("Placement: " + (gameEngine.getPlacementRule() == null ? "–" : gameEngine.getPlacementRule()));
+        diceComboText.setText((gameEngine.getCurrentCombination().isEmpty() ? "–" : gameEngine.getCurrentCombination()));
+        //diceComboText.setText("Dice: " + (gameEngine.getCurrentCombination().isEmpty() ? "–" : gameEngine.getCurrentCombination()));
+        placementRuleText.setText((gameEngine.getPlacementRule() == null ? "–" : gameEngine.getPlacementRule()));
+        //placementRuleText.setText("Placement: " + (gameEngine.getPlacementRule() == null ? "–" : gameEngine.getPlacementRule()));
 
         // Update highlights
         updateValidCellsHighlight();
