@@ -43,7 +43,8 @@ public class GameEngine {
         put("five_of_a_kind", "Any square");
         put("four_of_a_kind", "Any square");
         put("full_house", "Any corner or center square");
-        put("straight", "Any square in middle row or middle column");
+        put("straight", "Any middle row or column square");
+//        put("straight", "Any square in middle row or column");
         put("three_of_a_kind", "Any square except the center");
         put("two_pair", "Any corner square");
         put("one_pair", "Any edge square (non-corner)");
