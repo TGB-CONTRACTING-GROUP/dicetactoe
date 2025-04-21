@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Log.d("DiceTacToe", "Anonymous sign-in successful");
                         setupButtonListeners();
+                        // Start in Training mode by default
+                        showTrainingDifficultySelection();
                     } else {
                         Log.e("DiceTacToe", "Anonymous sign-in failed", task.getException());
                         if (attempt < MAX_AUTH_RETRIES - 1) {
@@ -244,10 +246,22 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("Select Training Difficulty")
                 .setItems(difficulties, (dialog, which) -> {
                     trainingDifficulty = difficulties[which].toLowerCase();
-                    setupOnlineGame();
+                    setupTrainingGame();
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    // If the user cancels, still start in Training mode with default difficulty (easy)
+                    trainingDifficulty = "easy";
+                    setupTrainingGame();
+                })
+                .setCancelable(false) // Prevent dismissing without selecting a difficulty
                 .show();
+    }
+
+    private void setupTrainingGame() {
+        isOnlineMode = false;
+        isVsAI = false;
+        startNewGame();
+        showToast("Starting Training mode on " + trainingDifficulty + " difficulty");
     }
 
     private void showPvPDifficultySelection() {
@@ -541,7 +555,6 @@ public class MainActivity extends AppCompatActivity {
     private void setupComputerGame() {
         isOnlineMode = false;
         isVsAI = true;
-        //isMyTurn = true; // Since Player X (human) always starts
         gameEngine.newGame();
         findViewById(R.id.skip_btn).setEnabled(false);
         updateBoardState();
@@ -653,6 +666,10 @@ public class MainActivity extends AppCompatActivity {
         if (isVsAI && !isOnlineMode) {
             isMyTurn = gameEngine.getCurrentPlayer().equals("X"); // Player X is the human player
         }
+        // Set isMyTurn for Training mode (Local PvP)
+        else if (!isOnlineMode && !isVsAI) {
+            isMyTurn = true; // In Training mode, the human player controls both X and O
+        }
 
         // Trigger AI turn if applicable
         if (isVsAI && !isOnlineMode
@@ -699,80 +716,6 @@ public class MainActivity extends AppCompatActivity {
         currentPlayerText.invalidate();
         currentPlayerText.requestLayout();
     }
-
-//    public void updateBoardState() {
-//        for (int i = 0; i < 9; i++) {
-//            TextView cell = (TextView) gameBoard.getChildAt(i);
-//            int row = i / 3;
-//            int col = i % 3;
-//            cell.setText(gameEngine.getCellValue(row, col));
-//        }
-//
-//        if (gameEngine.getGameState() == GameEngine.GameState.GAME_OVER) {
-//            String winner = gameEngine.getWinner();
-//            TextView diceInstruction = findViewById(R.id.dice_instruction);
-//            if (winner.equals("Draw")) {
-//                diceInstruction.setText("Game Over: It's a Draw!");
-//            } else {
-//                diceInstruction.setText(String.format("Game Over: Player %s Won!", winner));
-//            }
-//            Button rollBtn = findViewById(R.id.roll_btn);
-//            rollBtn.setEnabled(false);
-//            rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.controlBackground));
-//            playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
-//            playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
-//            if (isOnlineMode) {
-//                firebaseManager.endGame();
-//            }
-//            return;
-//        }
-//
-//        // Trigger AI turn if applicable
-//        if (isVsAI && !isOnlineMode
-//                && gameEngine.getCurrentPlayer().equals("O")
-//                && gameEngine.getGameState() != GameEngine.GameState.GAME_OVER
-//                && !isAITurnInProgress) {
-//
-//            new android.os.Handler().postDelayed(() -> handleAITurn(), 1000);
-//        }
-//
-//        String playerTurnText = String.format("Player %s’s turn – %d rolls left%s",
-//                gameEngine.getCurrentPlayer(), gameEngine.getRollsLeft(), isOnlineMode ? (isMyTurn ? " (Your turn)" : " (Opponent's turn)") : "");
-//        currentPlayerText.setText(playerTurnText);
-//
-//        TextView diceInstruction = findViewById(R.id.dice_instruction);
-//        if (!gameEngine.hasDiceRolled()) {
-//            diceInstruction.setText(String.format("Player %s, roll the dice to start your turn", gameEngine.getCurrentPlayer()));
-//        } else if (gameEngine.getRollsLeft() == 0) {
-//            diceInstruction.setText(String.format("Player %s, select a cell to place your mark", gameEngine.getCurrentPlayer()));
-//        } else {
-//            diceInstruction.setText(String.format("Player %s, tap dice to keep them, then click ‘Roll Dice’", gameEngine.getCurrentPlayer()));
-//        }
-//
-//        Button rollBtn = findViewById(R.id.roll_btn);
-//        if (gameEngine.getRollsLeft() <= 0 || (isOnlineMode && !isMyTurn)) {
-//            rollBtn.setEnabled(false);
-//            rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.controlBackground));
-//        } else {
-//            rollBtn.setEnabled(true);
-//            rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_purple));
-//        }
-//
-//        Button skipBtn = findViewById(R.id.skip_btn);
-//        boolean enableSkip = gameEngine.hasDiceRolled() && gameEngine.getRollsLeft() > 0 && (!isOnlineMode || isMyTurn);
-//        skipBtn.setEnabled(enableSkip);
-//
-//        diceComboText.setText((gameEngine.getCurrentCombination().isEmpty() ? "–" : gameEngine.getCurrentCombination()));
-//        placementRuleText.setText((gameEngine.getPlacementRule() == null ? "–" : gameEngine.getPlacementRule()));
-//
-//        updateValidCellsHighlight();
-//
-//        playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
-//        playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
-//
-//        currentPlayerText.invalidate();
-//        currentPlayerText.requestLayout();
-//    }
 
     private void handleAITurn() {
         isAITurnInProgress = true;
