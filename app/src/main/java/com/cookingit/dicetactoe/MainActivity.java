@@ -35,7 +35,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -138,14 +142,7 @@ public class MainActivity extends AppCompatActivity {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(16, 16, 16, 16);
 
-        TextView gameModesTitle = new TextView(this);
-        gameModesTitle.setText("Game Modes");
-        gameModesTitle.setTextSize(18);
-        gameModesTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
-        gameModesTitle.setPadding(0, 16, 0, 8);
-        layout.addView(gameModesTitle);
-
-        String[] gameModes = {"Training", "PvP", "Single Player vs. AI", "Multiplayer", "Timed Mode", "Game Hints", "Custom Rules"};
+        String[] gameModes = {"Training", "PvP", "Single Player vs. AI", "Game Hints"}; //, "Multiplayer", "Timed Mode", "Custom Rules"};
         builder.setItems(gameModes, (dialog, which) -> {
             switch (which) {
                 case 0: // Training
@@ -157,80 +154,87 @@ public class MainActivity extends AppCompatActivity {
                 case 2: // Single Player vs. AI
                     showAIDifficultySelection();
                     break;
-                case 3: // Multiplayer
-                    showMultiplayerOptions();
-                    break;
-                case 4: // Timed Mode
-                    startTimedMode();
-                    break;
-                case 5: // Game Hints
+                case 3: // Game Hints
                     gameHintsOptions();
                     break;
-                case 6: // Custom Rules
-                    showCustomRulesOptions();
-                    break;
+//                case 4: // Multiplayer
+//                    showMultiplayerOptions();
+//                    break;
+//                case 5: // Timed Mode
+//                    startTimedMode();
+//                    break;
+//                case 6: // Custom Rules
+//                    showCustomRulesOptions();
+//                    break;
             }
         });
 
-        TextView settingsTitle = new TextView(this);
-        settingsTitle.setText("Settings");
-        settingsTitle.setTextSize(18);
-        settingsTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
-        settingsTitle.setPadding(0, 16, 0, 8);
-        layout.addView(settingsTitle);
+//        TextView gameModesTitle = new TextView(this);
+//        gameModesTitle.setText("Game Modes");
+//        gameModesTitle.setTextSize(18);
+//        gameModesTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+//        gameModesTitle.setPadding(0, 16, 0, 8);
+//        layout.addView(gameModesTitle);
 
-        Button settingsButton = new Button(this);
-        settingsButton.setText("Configure Settings");
-        settingsButton.setOnClickListener(v -> showSettingsDialog());
-        layout.addView(settingsButton);
-
-        TextView statsTitle = new TextView(this);
-        statsTitle.setText("Statistics and Leaderboards");
-        statsTitle.setTextSize(18);
-        statsTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
-        statsTitle.setPadding(0, 16, 0, 8);
-        layout.addView(statsTitle);
-
-        Button statsButton = new Button(this);
-        statsButton.setText("View Stats and Leaderboards");
-        statsButton.setOnClickListener(v -> showStatsAndLeaderboards());
-        layout.addView(statsButton);
-
-        TextView helpTitle = new TextView(this);
-        helpTitle.setText("Tutorials or Help");
-        helpTitle.setTextSize(18);
-        helpTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
-        helpTitle.setPadding(0, 16, 0, 8);
-        layout.addView(helpTitle);
-
-        Button helpButton = new Button(this);
-        helpButton.setText("View Tutorials and Tips");
-        helpButton.setOnClickListener(v -> showTutorialsAndHelp());
-        layout.addView(helpButton);
-
-        TextView socialTitle = new TextView(this);
-        socialTitle.setText("Social Features");
-        socialTitle.setTextSize(18);
-        socialTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
-        socialTitle.setPadding(0, 16, 0, 8);
-        layout.addView(socialTitle);
-
-        Button socialButton = new Button(this);
-        socialButton.setText("Social Features");
-        socialButton.setOnClickListener(v -> showSocialFeatures());
-        layout.addView(socialButton);
-
-        TextView additionalGamesTitle = new TextView(this);
-        additionalGamesTitle.setText("Additional Games or Modes");
-        additionalGamesTitle.setTextSize(18);
-        additionalGamesTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
-        additionalGamesTitle.setPadding(0, 16, 0, 8);
-        layout.addView(additionalGamesTitle);
-
-        Button additionalGamesButton = new Button(this);
-        additionalGamesButton.setText("Explore Additional Games");
-        additionalGamesButton.setOnClickListener(v -> showAdditionalGames());
-        layout.addView(additionalGamesButton);
+//        TextView settingsTitle = new TextView(this);
+//        settingsTitle.setText("Settings");
+//        settingsTitle.setTextSize(18);
+//        settingsTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+//        settingsTitle.setPadding(0, 16, 0, 8);
+//        layout.addView(settingsTitle);
+//
+//        Button settingsButton = new Button(this);
+//        settingsButton.setText("Configure Settings");
+//        settingsButton.setOnClickListener(v -> showSettingsDialog());
+//        layout.addView(settingsButton);
+//
+//        TextView statsTitle = new TextView(this);
+//        statsTitle.setText("Statistics and Leaderboards");
+//        statsTitle.setTextSize(18);
+//        statsTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+//        statsTitle.setPadding(0, 16, 0, 8);
+//        layout.addView(statsTitle);
+//
+//        Button statsButton = new Button(this);
+//        statsButton.setText("View Stats and Leaderboards");
+//        statsButton.setOnClickListener(v -> showStatsAndLeaderboards());
+//        layout.addView(statsButton);
+//
+//        TextView helpTitle = new TextView(this);
+//        helpTitle.setText("Tutorials or Help");
+//        helpTitle.setTextSize(18);
+//        helpTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+//        helpTitle.setPadding(0, 16, 0, 8);
+//        layout.addView(helpTitle);
+//
+//        Button helpButton = new Button(this);
+//        helpButton.setText("View Tutorials and Tips");
+//        helpButton.setOnClickListener(v -> showTutorialsAndHelp());
+//        layout.addView(helpButton);
+//
+//        TextView socialTitle = new TextView(this);
+//        socialTitle.setText("Social Features");
+//        socialTitle.setTextSize(18);
+//        socialTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+//        socialTitle.setPadding(0, 16, 0, 8);
+//        layout.addView(socialTitle);
+//
+//        Button socialButton = new Button(this);
+//        socialButton.setText("Social Features");
+//        socialButton.setOnClickListener(v -> showSocialFeatures());
+//        layout.addView(socialButton);
+//
+//        TextView additionalGamesTitle = new TextView(this);
+//        additionalGamesTitle.setText("Additional Games or Modes");
+//        additionalGamesTitle.setTextSize(18);
+//        additionalGamesTitle.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+//        additionalGamesTitle.setPadding(0, 16, 0, 8);
+//        layout.addView(additionalGamesTitle);
+//
+//        Button additionalGamesButton = new Button(this);
+//        additionalGamesButton.setText("Explore Additional Games");
+//        additionalGamesButton.setOnClickListener(v -> showAdditionalGames());
+//        layout.addView(additionalGamesButton);
 
         android.widget.ScrollView scrollView = new android.widget.ScrollView(this);
         scrollView.addView(layout);
@@ -578,15 +582,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateDiceDisplay() {
         diceContainer.removeAllViews();
-        int[] diceValues = gameEngine.getDiceValues();
+        List<Integer> diceValues = gameEngine.getDiceValues(); // Changed from int[]
+        //int[] diceValues = gameEngine.getDiceValues();
 
         boolean canKeepDice = gameEngine.hasDiceRolled() && gameEngine.getRollsLeft() > 0 && isMyTurn;
         Log.d("DiceTacToe", "Can keep dice: " + canKeepDice + ", hasDiceRolled: " + gameEngine.hasDiceRolled() + ", rollsLeft: " + gameEngine.getRollsLeft());
 
-        for (int i = 0; i < diceValues.length; i++) {
+        for (int i = 0; i < diceValues.size(); i++) {   // for (int i = 0; i < diceValues.length; i++)
             final int index = i;
             TextView dieView = new TextView(this);
-            dieView.setText(String.valueOf(diceValues[index]));
+            dieView.setText(String.valueOf(diceValues.get(index)));
+            //dieView.setText(String.valueOf(diceValues[index]));
             dieView.setTextSize(24);
             dieView.setPadding(42, 24, 42, 24);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -646,10 +652,12 @@ public class MainActivity extends AppCompatActivity {
         if (gameEngine.getGameState() == GameEngine.GameState.GAME_OVER) {
             String winner = gameEngine.getWinner();
             TextView diceInstruction = findViewById(R.id.dice_instruction);
-            if (winner.equals("Draw")) {
+            if ("Draw".equals(winner)) { // Safe comparison: avoids NullPointerException
                 diceInstruction.setText("Game Over: It's a Draw!");
-            } else {
+            } else if (winner != null) {
                 diceInstruction.setText(String.format("Game Over: Player %s Won!", winner));
+            } else {
+                diceInstruction.setText("Game Over: Ended");
             }
             Button rollBtn = findViewById(R.id.roll_btn);
             rollBtn.setEnabled(false);
@@ -661,6 +669,25 @@ public class MainActivity extends AppCompatActivity {
             }
             return;
         }
+
+//        if (gameEngine.getGameState() == GameEngine.GameState.GAME_OVER) {
+//            String winner = gameEngine.getWinner();
+//            TextView diceInstruction = findViewById(R.id.dice_instruction);
+//            if (winner.equals("Draw")) {
+//                diceInstruction.setText("Game Over: It's a Draw!");
+//            } else {
+//                diceInstruction.setText(String.format("Game Over: Player %s Won!", winner));
+//            }
+//            Button rollBtn = findViewById(R.id.roll_btn);
+//            rollBtn.setEnabled(false);
+//            rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.controlBackground));
+//            playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
+//            playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
+//            if (isOnlineMode) {
+//                firebaseManager.endGame();
+//            }
+//            return;
+//        }
 
         // Set isMyTurn for Player vs AI mode
         if (isVsAI && !isOnlineMode) {
@@ -767,12 +794,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (isOnlineMode) {
-            if (isMyTurn && gameEngine.isValidMove(row, col)) {
+            if (isMyTurn && gameEngine.isValidMove(row, col) && gameEngine.getGameState() == GameEngine.GameState.PLACING) {
                 firebaseManager.sendMove(row, col);
                 gameEngine.makeMove(row, col);
                 updateBoardState();
             } else {
-                showToast("Not your turn or invalid move");
+                showToast("Not your turn, invalid move, or not in placing state");
             }
         } else {
             if (gameEngine.isValidMove(row, col)) {
@@ -781,6 +808,28 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+//    private void handleCellClick(int row, int col) {
+//        if (isVsAI && gameEngine.getCurrentPlayer().equals("O")) {
+//            showToast("AI's turn. Please wait.");
+//            return;
+//        }
+//
+//        if (isOnlineMode) {
+//            if (isMyTurn && gameEngine.isValidMove(row, col)) {
+//                firebaseManager.sendMove(row, col);
+//                gameEngine.makeMove(row, col);
+//                updateBoardState();
+//            } else {
+//                showToast("Not your turn or invalid move");
+//            }
+//        } else {
+//            if (gameEngine.isValidMove(row, col)) {
+//                gameEngine.makeMove(row, col);
+//                updateBoardState();
+//            }
+//        }
+//    }
 
     private void showNoMovesDialog() {
         NoMovesDialogFragment dialog = new NoMovesDialogFragment();
@@ -819,10 +868,19 @@ public class MainActivity extends AppCompatActivity {
             }
             if (gameEngine.rollDice()) {
                 showNoMovesDialog();
+                if (isOnlineMode) {
+                    // No valid moves, end turn
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("currentPlayer", gameEngine.getCurrentPlayer().equals("X") ? "O" : "X");
+                    updates.put("dice", new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0)));
+                    updates.put("currentCombo", "");
+                    firebaseManager.getDbRef().child("games").child(firebaseManager.getGameId()).updateChildren(updates)
+                            .addOnFailureListener(e -> showToast("Failed to end turn: " + e.getMessage()));
+                }
             }
             updateBoardState();
             updateDiceDisplay();
-            if (isOnlineMode) {
+            if (isOnlineMode && gameEngine.getRollsLeft() > 0) {
                 firebaseManager.updateDiceState(gameEngine.getDiceValues(), gameEngine.getCurrentCombination());
             }
         });
@@ -834,9 +892,18 @@ public class MainActivity extends AppCompatActivity {
             }
             if (gameEngine.skipRolls()) {
                 showNoMovesDialog();
+                if (isOnlineMode) {
+                    // No valid moves, end turn
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("currentPlayer", gameEngine.getCurrentPlayer().equals("X") ? "O" : "X");
+                    updates.put("dice", new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0)));
+                    updates.put("currentCombo", "");
+                    firebaseManager.getDbRef().child("games").child(firebaseManager.getGameId()).updateChildren(updates)
+                            .addOnFailureListener(e -> showToast("Failed to end turn: " + e.getMessage()));
+                }
             }
             updateBoardState();
-            if (isOnlineMode) {
+            if (isOnlineMode && gameEngine.getRollsLeft() > 0) {
                 firebaseManager.updateDiceState(gameEngine.getDiceValues(), gameEngine.getCurrentCombination());
             }
         });
@@ -855,4 +922,49 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.toggle_hints).setOnClickListener(v -> showMoreOptions());
     }
+
+//    private void setupButtonListeners() {
+//        findViewById(R.id.roll_btn).setOnClickListener(v -> {
+//            if (isOnlineMode && !isMyTurn) {
+//                showToast("Not your turn!");
+//                return;
+//            }
+//            if (gameEngine.rollDice()) {
+//                showNoMovesDialog();
+//            }
+//            updateBoardState();
+//            updateDiceDisplay();
+//            if (isOnlineMode) {
+//                firebaseManager.updateDiceState(gameEngine.getDiceValues(), gameEngine.getCurrentCombination());
+//            }
+//        });
+//
+//        findViewById(R.id.skip_btn).setOnClickListener(v -> {
+//            if (isOnlineMode && !isMyTurn) {
+//                showToast("Not your turn!");
+//                return;
+//            }
+//            if (gameEngine.skipRolls()) {
+//                showNoMovesDialog();
+//            }
+//            updateBoardState();
+//            if (isOnlineMode) {
+//                firebaseManager.updateDiceState(gameEngine.getDiceValues(), gameEngine.getCurrentCombination());
+//            }
+//        });
+//
+//        findViewById(R.id.new_game).setOnClickListener(v -> {
+//            if (isOnlineMode) {
+//                firebaseManager.endGame();
+//                setupOnlineGame();
+//            } else {
+//                gameEngine.newGame();
+//                updateBoardState();
+//                updateDiceDisplay();
+//                findViewById(R.id.skip_btn).setEnabled(false);
+//            }
+//        });
+//
+//        findViewById(R.id.toggle_hints).setOnClickListener(v -> showMoreOptions());
+//    }
 }
