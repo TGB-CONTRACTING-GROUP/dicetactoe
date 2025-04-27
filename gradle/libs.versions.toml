@@ -8,7 +8,7 @@ material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
 androidx-gridlayout = "1.0.0"
-firebaseDatabase = "21.0.0"
+#firebaseDatabase = "21.0.0"
 firebase-bom = "33.12.0"
 
 [libraries]
@@ -27,7 +27,8 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 # Firebase components (no versions needed when using BoM)
 firebase-auth = { module = "com.google.firebase:firebase-auth" } # optional if using BoM
-firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+firebase-database = { module = "com.google.firebase:firebase-database" }
+#firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 
 [plugins]
