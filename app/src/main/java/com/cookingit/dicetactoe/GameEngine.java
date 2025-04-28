@@ -45,6 +45,14 @@ public class GameEngine {
         }
     }
 
+    public void setPlayerXScore(int score) {
+        this.playerXScore = score;
+    }
+
+    public void setPlayerOScore(int score) {
+        this.playerOScore = score;
+    }
+
     private Map<String, String> boardToMap() {
         Map<String, String> boardMap = new HashMap<>();
         for (int i = 0; i < 3; i++) {
@@ -299,16 +307,49 @@ public class GameEngine {
         }
         this.board = newBoard;
 
+        // Get current dice values and kept status
+        List<Integer> currentDiceValues = new ArrayList<>(this.dice);
+        boolean[] currentKeptStatus = Arrays.copyOf(this.keptDice, this.keptDice.length);
+
         // Use the helper method from GameManager to get dice as a list
         List<Integer> remoteDice = remoteState.getDiceAsList();
         if (remoteDice != null && remoteDice.size() == 5) {
-            this.dice = new ArrayList<>(remoteDice);
-        } else {
-            this.dice = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
-        }
+            // Only update dice values if the remote has actual values
+            boolean hasNonZeroValues = false;
+            for (Integer value : remoteDice) {
+                if (value > 0) {
+                    hasNonZeroValues = true;
+                    break;
+                }
+            }
 
-        // Reset kept dice status when syncing from remote
-        Arrays.fill(keptDice, false);
+            if (hasNonZeroValues) {
+                // Check if it's the same player's turn
+                if (this.currentPlayer.equals(remoteState.currentPlayer)) {
+                    // Preserve kept dice values
+                    List<Integer> newDiceValues = new ArrayList<>(remoteDice);
+                    for (int i = 0; i < 5; i++) {
+                        if (currentKeptStatus[i] && i < currentDiceValues.size() && i < newDiceValues.size()) {
+                            // Keep the current value for kept dice
+                            newDiceValues.set(i, currentDiceValues.get(i));
+                        }
+                    }
+                    this.dice = newDiceValues;
+                } else {
+                    // Different player's turn, reset kept status and use remote dice
+                    this.dice = new ArrayList<>(remoteDice);
+                    Arrays.fill(keptDice, false);
+                }
+            } else {
+                // Remote has all zeros, use those and reset kept status
+                this.dice = new ArrayList<>(remoteDice);
+                Arrays.fill(keptDice, false);
+            }
+        } else {
+            // Invalid remote dice, reset to defaults
+            this.dice = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
+            Arrays.fill(keptDice, false);
+        }
 
         this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
         this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
@@ -324,6 +365,103 @@ public class GameEngine {
         this.winner = checkWinnerAfterSync();
         validPositions = getValidPositions();
     }
+
+//    public void syncWithRemote(GameManager remoteState) {
+//        if (remoteState.board == null) {
+//            remoteState.board = new HashMap<>();
+//            Log.w("GameEngine", "Remote board was null, initialized to empty map");
+//        }
+//        List<List<String>> newBoard = mapToBoard(remoteState.board);
+//        if (!isValidBoard(newBoard)) {
+//            Log.e("GameEngine", "Invalid board structure, resetting to empty board");
+//            newBoard = initializeEmptyBoard();
+//        }
+//        this.board = newBoard;
+//
+//        // Get current dice values to check which ones were kept
+//        List<Integer> currentDiceValues = new ArrayList<>(this.dice);
+//
+//        // Use the helper method from GameManager to get dice as a list
+//        List<Integer> remoteDice = remoteState.getDiceAsList();
+//        if (remoteDice != null && remoteDice.size() == 5) {
+//            // Only update dice values if the remote has non-zero values
+//            boolean hasNonZeroValues = false;
+//            for (Integer value : remoteDice) {
+//                if (value > 0) {
+//                    hasNonZeroValues = true;
+//                    break;
+//                }
+//            }
+//
+//            if (hasNonZeroValues) {
+//                // Preserve kept dice values
+//                List<Integer> newDiceValues = new ArrayList<>(remoteDice);
+//                for (int i = 0; i < 5; i++) {
+//                    if (isDieKept(i) && i < currentDiceValues.size() && i < newDiceValues.size()) {
+//                        // Keep the current value for kept dice
+//                        newDiceValues.set(i, currentDiceValues.get(i));
+//                    }
+//                }
+//                this.dice = newDiceValues;
+//            } else {
+//                this.dice = new ArrayList<>(remoteDice);
+//            }
+//        } else {
+//            this.dice = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
+//        }
+//
+//        this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
+//        this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
+//
+//        if (remoteState.status != null) {
+//            if ("game_over".equals(remoteState.status)) {
+//                this.gameState = GameState.GAME_OVER;
+//            } else if ("playing".equals(remoteState.status)) {
+//                this.gameState = this.rollsLeft > 0 ? GameState.ROLLING : GameState.PLACING;
+//            }
+//        }
+//
+//        this.winner = checkWinnerAfterSync();
+//        validPositions = getValidPositions();
+//    }
+
+//    public void syncWithRemote(GameManager remoteState) {
+//        if (remoteState.board == null) {
+//            remoteState.board = new HashMap<>();
+//            Log.w("GameEngine", "Remote board was null, initialized to empty map");
+//        }
+//        List<List<String>> newBoard = mapToBoard(remoteState.board);
+//        if (!isValidBoard(newBoard)) {
+//            Log.e("GameEngine", "Invalid board structure, resetting to empty board");
+//            newBoard = initializeEmptyBoard();
+//        }
+//        this.board = newBoard;
+//
+//        // Use the helper method from GameManager to get dice as a list
+//        List<Integer> remoteDice = remoteState.getDiceAsList();
+//        if (remoteDice != null && remoteDice.size() == 5) {
+//            this.dice = new ArrayList<>(remoteDice);
+//        } else {
+//            this.dice = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
+//        }
+//
+//        // Reset kept dice status when syncing from remote
+//        Arrays.fill(keptDice, false);
+//
+//        this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
+//        this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
+//
+//        if (remoteState.status != null) {
+//            if ("game_over".equals(remoteState.status)) {
+//                this.gameState = GameState.GAME_OVER;
+//            } else if ("playing".equals(remoteState.status)) {
+//                this.gameState = this.rollsLeft > 0 ? GameState.ROLLING : GameState.PLACING;
+//            }
+//        }
+//
+//        this.winner = checkWinnerAfterSync();
+//        validPositions = getValidPositions();
+//    }
 
     private List<List<String>> initializeEmptyBoard() {
         List<List<String>> newBoard = new ArrayList<>();
