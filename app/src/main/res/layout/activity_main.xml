@@ -4,25 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gameBoardBackground"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="@color/gameBoardBackground">
+    android:padding="8dp">
 
     <!-- Game Score -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/gameScoreBackground"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@color/gameScoreBackground">
+        android:padding="8dp">
 
         <!-- Player X Section -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <!-- Player X Icon with X Overlay -->
             <FrameLayout
@@ -33,17 +33,17 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_black_user"
-                    android:contentDescription="Player X Icon" />
+                    android:contentDescription="Player X Icon"
+                    android:src="@drawable/ic_black_user" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="X"
-                    android:textSize="14sp"
                     android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:layout_gravity="center" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </FrameLayout>
 
             <TextView
@@ -51,8 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="24sp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textSize="24sp" />
         </LinearLayout>
 
         <!-- Player O Section -->
@@ -60,16 +60,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/player_o_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="24sp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textSize="24sp" />
 
             <!-- Player O Icon with O Overlay -->
             <FrameLayout
@@ -80,17 +80,17 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_black_user"
-                    android:contentDescription="Player O Icon" />
+                    android:contentDescription="Player O Icon"
+                    android:src="@drawable/ic_black_user" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="O"
-                    android:textSize="14sp"
                     android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:layout_gravity="center" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
@@ -99,19 +99,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/gameScoreBackground"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@color/gameScoreBackground">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/current_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Player X’s turn – 3 rolls left"
             android:gravity="center"
-            android:textSize="18sp"
+            android:text="Player X’s turn – 3 rolls left"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- Game Board Column -->
@@ -119,9 +119,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
+        android:background="@color/gameBoardBackground"
         android:gravity="center_horizontal"
-        android:background="@color/gameBoardBackground">
+        android:orientation="vertical">
 
         <androidx.gridlayout.widget.GridLayout
             android:id="@+id/game_board"
@@ -129,144 +129,142 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            app:rowCount="3"
-            app:columnCount="3">
-        </androidx.gridlayout.widget.GridLayout>
+            app:columnCount="3"
+            app:rowCount="3"></androidx.gridlayout.widget.GridLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
             android:text="@string/dice_results"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center_horizontal"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/dice_instruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Roll the dice to start the game"
-            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:layout_gravity="center_horizontal"/>
+            android:text="Roll the dice to start the game"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/dice_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
             android:gravity="center"
-            android:layout_marginTop="4dp">
-        </LinearLayout>
+            android:orientation="horizontal"></LinearLayout>
     </LinearLayout>
 
     <!-- Current Player, Dice, Placement Info -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_gravity="center_horizontal"
         android:background="@drawable/rounded_top_corners"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <!-- Current Player Column -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Current Player"
-                android:textSize="12sp"
                 android:textColor="#666666"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/current_player_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="X"
-                android:textSize="14sp"
                 android:textColor="#000000"
-                android:textStyle="bold"/>
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Vertical Divider -->
         <View
             android:layout_width="1dp"
             android:layout_height="20dp"
-            android:background="#CCCCCC"
-            android:layout_marginHorizontal="4dp"/>
+            android:layout_marginHorizontal="4dp"
+            android:background="#CCCCCC" />
 
         <!-- Dice Combination Column -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Dice Combination"
-                android:textSize="12sp"
                 android:textColor="#666666"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dice_combo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" - "
-                android:textSize="12sp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Vertical Divider -->
         <View
             android:layout_width="1dp"
             android:layout_height="20dp"
-            android:background="#CCCCCC"
-            android:layout_marginHorizontal="4dp"/>
+            android:layout_marginHorizontal="4dp"
+            android:background="#CCCCCC" />
 
         <!-- Placement Rule Column -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Placement"
-                android:textSize="12sp"
                 android:textColor="#666666"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/placement_rule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" - "
-                android:textSize="12sp"
-                android:textColor="#000000"
+                android:gravity="center"
                 android:maxLines="2"
-                android:gravity="center"/>
+                android:text=" - "
+                android:textColor="#000000"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -274,10 +272,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="0dp"
-        android:padding="8dp"
-        android:background="@color/controlBackground">
+        android:background="@color/controlBackground"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <!-- More Button -->
         <Button
@@ -285,17 +283,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="60dp"
-            android:text="More"
+            android:backgroundTint="@color/controlBackground"
             android:drawableTop="@drawable/ic_more"
             android:drawablePadding="2dp"
+            android:ellipsize="none"
             android:gravity="center"
+            android:minHeight="60dp"
             android:paddingTop="4dp"
-            android:backgroundTint="@color/controlBackground"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
             android:singleLine="true"
-            android:ellipsize="none"/>
+            android:text="More"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
         <!-- New Game Button -->
         <Button
@@ -303,17 +301,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="60dp"
-            android:text="New\nGame"
+            android:backgroundTint="@color/controlBackground"
             android:drawableTop="@drawable/ic_new_game"
             android:drawablePadding="2dp"
             android:gravity="center"
-            android:paddingTop="4dp"
-            android:backgroundTint="@color/controlBackground"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
             android:lineSpacingMultiplier="1.0"
-            />
+            android:minHeight="60dp"
+            android:paddingTop="4dp"
+            android:text="New\nGame"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
 
         <!-- Roll Dice Button -->
         <Button
@@ -321,16 +318,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="60dp"
-            android:text="Roll\nDice"
+            android:backgroundTint="@color/roll_dice_purple"
             android:drawableTop="@drawable/ic_dice"
             android:drawablePadding="2dp"
             android:gravity="center"
+            android:lineSpacingMultiplier="1.0"
+            android:minHeight="60dp"
             android:paddingTop="4dp"
-            android:backgroundTint="@color/roll_dice_purple"
+            android:text="Roll\nDice"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:lineSpacingMultiplier="1.0"/>
+            android:textSize="12sp" />
 
         <!-- Skip Rolls Button -->
         <Button
@@ -338,16 +335,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="60dp"
-            android:text="Skip\nRolls"
+            android:backgroundTint="@color/controlBackground"
             android:drawableTop="@drawable/ic_skip"
             android:drawablePadding="2dp"
             android:gravity="center"
+            android:lineSpacingMultiplier="1.0"
+            android:minHeight="60dp"
             android:paddingTop="4dp"
-            android:backgroundTint="@color/controlBackground"
+            android:text="Skip\nRolls"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:lineSpacingMultiplier="1.0"/>
+            android:textSize="12sp" />
 
         <!-- Next Button -->
         <Button
@@ -355,17 +352,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="60dp"
-            android:text="Next"
+            android:backgroundTint="@color/controlBackground"
             android:drawableTop="@drawable/ic_next"
             android:drawablePadding="2dp"
+            android:ellipsize="none"
             android:gravity="center"
+            android:minHeight="60dp"
             android:paddingTop="4dp"
-            android:backgroundTint="@color/controlBackground"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
             android:singleLine="true"
-            android:ellipsize="none"/>
+            android:text="Next"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
     </LinearLayout>
 </LinearLayout>

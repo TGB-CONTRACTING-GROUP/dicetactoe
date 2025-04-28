@@ -1,5 +1,7 @@
 package com.cookingit.dicetactoe;
 
+import android.util.Log;
+
 import com.cookingit.dicetactoe.firebase.GameManager;
 
 import java.util.ArrayList;
@@ -43,7 +45,6 @@ public class GameEngine {
         }
     }
 
-    // Convert List<List<String>> to Map<String, String>
     private Map<String, String> boardToMap() {
         Map<String, String> boardMap = new HashMap<>();
         for (int i = 0; i < 3; i++) {
@@ -57,7 +58,6 @@ public class GameEngine {
         return boardMap;
     }
 
-    // Convert Map<String, String> to List<List<String>>
     private List<List<String>> mapToBoard(Map<String, String> boardMap) {
         List<List<String>> newBoard = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -124,45 +124,15 @@ public class GameEngine {
         return false;
     }
 
-//    public boolean rollDice() {
-//        if (rollsLeft <= 0) {
-//            return false;
-//        }
-//
-//        if (!diceRolled) {
-//            for (int i = 0; i < 5; i++) {
-//                dice[i] = (int) (Math.random() * 6) + 1;
-//            }
-//            diceRolled = true;
-//        } else {
-//            for (int i = 0; i < 5; i++) {
-//                if (!isDieKept(i)) {
-//                    dice[i] = (int) (Math.random() * 6) + 1;
-//                }
-//            }
-//        }
-//        rollsLeft--;
-//        currentCombo = getDiceCombination();
-//
-//        if (rollsLeft == 0) {
-//            validPositions = getValidPositions();
-//            if (validPositions.isEmpty()) {
-//                return true;
-//            } else {
-//                gameState = GameState.PLACING;
-//            }
-//        }
-//        return false;
-//    }
-
     private String getDiceCombination() {
         Map<Integer, Integer> counts = new HashMap<>();
-        for (int die : dice) {
-            Integer count = counts.get(die);
+        for (Number die : dice) {
+            int dieValue = die.intValue(); // Safely convert to int, whether Long or Integer
+            Integer count = counts.get(dieValue);
             if (count == null) {
-                counts.put(die, 1);
+                counts.put(dieValue, 1);
             } else {
-                counts.put(die, count + 1);
+                counts.put(dieValue, count + 1);
             }
         }
 
@@ -237,44 +207,6 @@ public class GameEngine {
         return positions;
     }
 
-//    public List<int[]> getValidPositions() {
-//        List<int[]> positions = new ArrayList<>();
-//        switch (currentCombo) {
-//            case "five_of_a_kind":
-//            case "four_of_a_kind":
-//                for (int i = 0; i < 3; i++) {
-//                    for (int j = 0; j < 3; j++) {
-//                        if (board[i][j] == null) positions.add(new int[]{i, j});
-//                    }
-//                }
-//                break;
-//            case "full_house":
-//                positions.addAll(checkAvailable(corners));
-//                positions.addAll(checkAvailable(center));
-//                break;
-//            case "straight":
-//                positions.addAll(checkAvailable(List.of(
-//                        new int[]{1, 0}, new int[]{1, 1}, new int[]{1, 2},
-//                        new int[]{0, 1}, new int[]{2, 1}
-//                )));
-//                break;
-//            case "three_of_a_kind":
-//                positions.addAll(checkAvailable(corners));
-//                positions.addAll(checkAvailable(edges));
-//                break;
-//            case "two_pair":
-//                positions.addAll(checkAvailable(corners));
-//                break;
-//            case "one_pair":
-//                positions.addAll(checkAvailable(edges));
-//                break;
-//            case "all_different":
-//                positions.addAll(checkAvailable(center));
-//                break;
-//        }
-//        return positions;
-//    }
-
     private List<int[]> checkAvailable(List<int[]> positions) {
         List<int[]> available = new ArrayList<>();
         for (int[] pos : positions) {
@@ -284,16 +216,6 @@ public class GameEngine {
         }
         return available;
     }
-
-//    private List<int[]> checkAvailable(List<int[]> positions) {
-//        List<int[]> available = new ArrayList<>();
-//        for (int[] pos : positions) {
-//            if (board[pos[0]][pos[1]] == null) {
-//                available.add(pos);
-//            }
-//        }
-//        return available;
-//    }
 
     public void makeMove(int row, int col) {
         if (row == -1 && col == -1) {
@@ -306,18 +228,6 @@ public class GameEngine {
             }
         }
     }
-
-//    public void makeMove(int row, int col) {
-//        if (row == -1 && col == -1) {
-//            switchPlayer();
-//        } else if (isValidMove(row, col)) {
-//            board[row][col] = currentPlayer;
-//            checkWinner();
-//            if (winner == null) {
-//                switchPlayer();
-//            }
-//        }
-//    }
 
     private void checkWinner() {
         for (int i = 0; i < 3; i++) {
@@ -358,45 +268,6 @@ public class GameEngine {
         }
     }
 
-//    private void checkWinner() {
-//        for (int i = 0; i < 3; i++) {
-//            if (checkLine(board[i][0], board[i][1], board[i][2])) {
-//                gameState = GameState.GAME_OVER;
-//                incrementScore(winner);
-//                return;
-//            }
-//            if (checkLine(board[0][i], board[1][i], board[2][i])) {
-//                gameState = GameState.GAME_OVER;
-//                incrementScore(winner);
-//                return;
-//            }
-//        }
-//        if (checkLine(board[0][0], board[1][1], board[2][2])) {
-//            gameState = GameState.GAME_OVER;
-//            incrementScore(winner);
-//            return;
-//        }
-//        if (checkLine(board[0][2], board[1][1], board[2][0])) {
-//            gameState = GameState.GAME_OVER;
-//            incrementScore(winner);
-//            return;
-//        }
-//
-//        boolean isFull = true;
-//        for (String[] row : board) {
-//            for (String cell : row) {
-//                if (cell == null) {
-//                    isFull = false;
-//                    break;
-//                }
-//            }
-//        }
-//        if (isFull) {
-//            winner = "Draw";
-//            gameState = GameState.GAME_OVER;
-//        }
-//    }
-
     private boolean checkLine(String a, String b, String c) {
         if (a != null && a.equals(b) && a.equals(c)) {
             winner = a;
@@ -416,103 +287,69 @@ public class GameEngine {
         dice = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0)); // Reset dice
     }
 
-//    private void switchPlayer() {
-//        currentPlayer = currentPlayer.equals("X") ? "O" : "X";
-//        diceRolled = false;
-//        rollsLeft = 3;
-//        gameState = GameState.ROLLING;
-//        validPositions.clear();
-//        currentCombo = "";
-//        Arrays.fill(keptDice, false);
-//    }
-
     public void syncWithRemote(GameManager remoteState) {
-        // Convert the Map<String, String> to List<List<String>>
-        this.board = mapToBoard(remoteState.board);
+        if (remoteState.board == null) {
+            remoteState.board = new HashMap<>();
+            Log.w("GameEngine", "Remote board was null, initialized to empty map");
+        }
+        List<List<String>> newBoard = mapToBoard(remoteState.board);
+        if (!isValidBoard(newBoard)) {
+            Log.e("GameEngine", "Invalid board structure, resetting to empty board");
+            newBoard = initializeEmptyBoard();
+        }
+        this.board = newBoard;
+
+        // Use the helper method from GameManager to get dice as a list
+        List<Integer> remoteDice = remoteState.getDiceAsList();
+        if (remoteDice != null && remoteDice.size() == 5) {
+            this.dice = new ArrayList<>(remoteDice);
+        } else {
+            this.dice = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
+        }
+
+        // Reset kept dice status when syncing from remote
+        Arrays.fill(keptDice, false);
+
         this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
-        this.dice = remoteState.dice != null ? new ArrayList<>(remoteState.dice) : new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
         this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
-        this.gameState = remoteState.status != null && remoteState.status.equals("game_over") ? GameState.GAME_OVER : gameState;
+
+        if (remoteState.status != null) {
+            if ("game_over".equals(remoteState.status)) {
+                this.gameState = GameState.GAME_OVER;
+            } else if ("playing".equals(remoteState.status)) {
+                this.gameState = this.rollsLeft > 0 ? GameState.ROLLING : GameState.PLACING;
+            }
+        }
+
         this.winner = checkWinnerAfterSync();
         validPositions = getValidPositions();
+    }
+
+    private List<List<String>> initializeEmptyBoard() {
+        List<List<String>> newBoard = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            List<String> row = new ArrayList<>();
+            for (int j = 0; j < 3; j++) {
+                row.add(null);
+            }
+            newBoard.add(row);
+        }
+        return newBoard;
     }
 
     public Map<String, String> getBoardAsMap() {
         return boardToMap();
     }
 
-//    public void syncWithRemote(GameManager remoteState) {
-//        // Initialize board if remoteState.board is null or malformed
-//        if (remoteState.board == null || !isValidBoard(remoteState.board)) {
-//            initializeBoard();
-//        } else {
-//            board = new ArrayList<>();
-//            for (List<String> row : remoteState.board) {
-//                // Ensure each row is valid; if not, initialize it
-//                if (row == null || row.size() != 3) {
-//                    List<String> newRow = new ArrayList<>();
-//                    for (int j = 0; j < 3; j++) {
-//                        newRow.add(null);
-//                    }
-//                    board.add(newRow);
-//                } else {
-//                    board.add(new ArrayList<>(row));
-//                }
-//            }
-//        }
-//        this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
-//        this.dice = remoteState.dice != null ? new ArrayList<>(remoteState.dice) : new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
-//        this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
-//        this.gameState = remoteState.status != null && remoteState.status.equals("game_over") ? GameState.GAME_OVER : gameState;
-//        this.winner = checkWinnerAfterSync();
-//        validPositions = getValidPositions();
-//    }
-
-//    public void syncWithRemote(GameManager remoteState) {
-//        // Initialize board if remoteState.board is null
-//        if (remoteState.board == null) {
-//            initializeBoard();
-//        } else {
-//            board = new ArrayList<>();
-//            for (List<String> row : remoteState.board) {
-//                board.add(new ArrayList<>(row));
-//            }
-//        }
-//        this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
-//        this.dice = remoteState.dice != null ? new ArrayList<>(remoteState.dice) : new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
-//        this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
-//        this.gameState = remoteState.status != null && remoteState.status.equals("game_over") ? GameState.GAME_OVER : gameState;
-//        this.winner = checkWinnerAfterSync();
-//        validPositions = getValidPositions();
-//    }
-
-//    public void syncWithRemote(GameManager remoteState) {
-//        this.board = remoteState.board != null ? remoteState.board : new String[3][3];
-//        this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
-//        this.dice = remoteState.dice != null ? new ArrayList<>(remoteState.dice) : new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
-//        this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
-//        this.gameState = remoteState.status != null && remoteState.status.equals("game_over") ? GameState.GAME_OVER : gameState;
-//        this.winner = checkWinnerAfterSync();
-//        validPositions = getValidPositions();
-//    }
-
-//    public void syncWithRemote(GameManager remoteState) {
-//        this.board = remoteState.board != null ? remoteState.board : new String[3][3];
-//        this.currentPlayer = remoteState.currentPlayer != null ? remoteState.currentPlayer : "X";
-//        this.dice = remoteState.dice != null ? remoteState.dice : new int[5];
-//        this.currentCombo = remoteState.currentCombo != null ? remoteState.currentCombo : "";
-//        this.gameState = remoteState.status != null && remoteState.status.equals("game_over") ? GameState.GAME_OVER : gameState;
-//        this.winner = checkWinnerAfterSync();
-//        validPositions = getValidPositions();
-//    }
-
     // Helper method to validate the board structure
     private boolean isValidBoard(List<List<String>> board) {
         if (board == null || board.size() != 3) {
+            Log.e("GameEngine", "Invalid board: null or incorrect size");
             return false;
         }
         for (List<String> row : board) {
             if (row == null || row.size() != 3) {
+                Log.e("GameEngine", "Invalid board: row is null or incorrect size");
                 return false;
             }
         }
@@ -539,26 +376,6 @@ public class GameEngine {
         return isFull ? "Draw" : null;
     }
 
-//    private String checkWinnerAfterSync() {
-//        for (int i = 0; i < 3; i++) {
-//            if (checkLine(board[i][0], board[i][1], board[i][2])) return winner;
-//            if (checkLine(board[0][i], board[1][i], board[2][i])) return winner;
-//        }
-//        if (checkLine(board[0][0], board[1][1], board[2][2])) return winner;
-//        if (checkLine(board[0][2], board[1][1], board[2][0])) return winner;
-//
-//        boolean isFull = true;
-//        for (String[] row : board) {
-//            for (String cell : row) {
-//                if (cell == null) {
-//                    isFull = false;
-//                    break;
-//                }
-//            }
-//        }
-//        return isFull ? "Draw" : null;
-//    }
-
     public String getCurrentPlayer() { return currentPlayer; }
     public int getRollsLeft() { return rollsLeft; }
     public String getCurrentCombination() { return currentCombo; }
@@ -566,11 +383,10 @@ public class GameEngine {
     public boolean hintsEnabled() { return hintsVisible; }
     public void toggleHints() { hintsVisible = !hintsVisible; }
     public String getCellValue(int row, int col) { return board.get(row).get(col); }
-    //public String getCellValue(int row, int col) { return board[row][col]; }
     public List<Integer> getDiceValues() { // Changed return type
         return new ArrayList<>(dice);
     }
-//    public int[] getDiceValues() { return dice; }
+
     public boolean isDieKept(int index) {
         if (index < 0 || index >= 5) return false;
         return keptDice[index];
@@ -587,11 +403,6 @@ public class GameEngine {
         return board.get(row).get(col) == null && isValidPosition(row, col);
     }
 
-//    public boolean isValidMove(int row, int col) {
-//        if (gameState != GameState.PLACING) return false;
-//        if (row < 0 || row >= 3 || col < 0 || col >= 3) return false;
-//        return board[row][col] == null && isValidPosition(row, col);
-//    }
     private boolean isValidPosition(int row, int col) {
         for (int[] pos : validPositions) {
             if (pos[0] == row && pos[1] == col) return true;
@@ -629,31 +440,6 @@ public class GameEngine {
         Arrays.fill(keptDice, false);
     }
 
-//    public void newGame() {
-//        board = new String[3][3];
-//        currentPlayer = "X";
-//        winner = null;
-//        dice = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0)); // Initialize List
-//        diceRolled = false;
-//        rollsLeft = 3;
-//        gameState = GameState.ROLLING;
-//        validPositions.clear();
-//        currentCombo = "";
-//        Arrays.fill(keptDice, false);
-//    }
-
-//    public void newGame() {
-//        board = new String[3][3];
-//        currentPlayer = "X";
-//        winner = null;
-//        dice = new int[5];
-//        diceRolled = false;
-//        rollsLeft = 3;
-//        gameState = GameState.ROLLING;
-//        validPositions.clear();
-//        currentCombo = "";
-//        Arrays.fill(keptDice, false);
-//    }
     public String getWinner() { return winner; }
     public GameState getGameState() { return gameState; }
 }

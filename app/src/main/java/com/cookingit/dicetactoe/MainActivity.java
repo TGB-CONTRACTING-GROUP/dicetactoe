@@ -62,13 +62,18 @@ public class MainActivity extends AppCompatActivity {
     private boolean isVsAI = false;
     private boolean isAITurnInProgress = false;
     private static final int MAX_AUTH_RETRIES = 3;
+    private Toast currentToast;
+    private boolean isAuthenticated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gameBoard = findViewById(R.id.game_board);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        FirebaseDatabase.getInstance().setLogLevel(com.google.firebase.database.Logger.Level.DEBUG);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(false);
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         gameEngine = new GameEngine();
         initializeUIComponents();
@@ -83,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Log.d("DiceTacToe", "Anonymous sign-in successful");
+                        isAuthenticated = true;
                         setupButtonListeners();
-                        // Start in Training mode by default
                         showTrainingDifficultySelection();
                     } else {
                         Log.e("DiceTacToe", "Anonymous sign-in failed", task.getException());
@@ -97,6 +102,26 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+//    private void trySignInAnonymously(int attempt) {
+//        FirebaseAuth.getInstance().signInAnonymously()
+//                .addOnCompleteListener(this, task -> {
+//                    if (task.isSuccessful()) {
+//                        Log.d("DiceTacToe", "Anonymous sign-in successful");
+//                        setupButtonListeners();
+//                        // Start in Training mode by default
+//                        showTrainingDifficultySelection();
+//                    } else {
+//                        Log.e("DiceTacToe", "Anonymous sign-in failed", task.getException());
+//                        if (attempt < MAX_AUTH_RETRIES - 1) {
+//                            Log.d("DiceTacToe", "Retrying sign-in, attempt " + (attempt + 1));
+//                            trySignInAnonymously(attempt + 1);
+//                        } else {
+//                            showToast("Authentication failed after " + MAX_AUTH_RETRIES + " attempts. Please check your setup.");
+//                        }
+//                    }
+//                });
+//    }
 
     private void initializeUIComponents() {
         gameBoard = findViewById(R.id.game_board);
@@ -269,6 +294,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showPvPDifficultySelection() {
+        if (!isAuthenticated) {
+            showToast("Please wait, signing in...");
+            return;
+        }
         String[] difficulties = {"Easy", "Medium", "Hard"};
         new AlertDialog.Builder(this)
                 .setTitle("Select PvP Difficulty")
@@ -279,6 +308,18 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .show();
     }
+
+//    private void showPvPDifficultySelection() {
+//        String[] difficulties = {"Easy", "Medium", "Hard"};
+//        new AlertDialog.Builder(this)
+//                .setTitle("Select PvP Difficulty")
+//                .setItems(difficulties, (dialog, which) -> {
+//                    pvpDifficulty = difficulties[which].toLowerCase();
+//                    setupOnlineGame();
+//                })
+//                .setNegativeButton("Cancel", null)
+//                .show();
+//    }
 
     private void showAIDifficultySelection() {
         String[] difficulties = {"Easy", "Medium", "Hard"};
@@ -520,8 +561,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupOnlineGame() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
+        if (!isAuthenticated) {
             showToast("Please wait, signing in...");
             trySignInAnonymouslyForOnlineGame(0);
         } else {
@@ -533,6 +573,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signInAnonymously()
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        Log.d("DiceTacToe", "Anonymous sign-in successful for online game");
                         initializeOnlineGame();
                     } else {
                         Log.e("DiceTacToe", "Anonymous sign-in failed for online game", task.getException());
@@ -547,9 +588,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeOnlineGame() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            showToast("Authentication required. Please try again.");
+            return;
+        }
         isOnlineMode = true;
         firebaseManager = new FirebaseManager(this, gameEngine);
-        firebaseManager.findAvailableGame();
+        firebaseManager.findOrCreateGame();
         findViewById(R.id.skip_btn).setEnabled(false);
         updateBoardState();
         updateDiceDisplay();
@@ -576,8 +622,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.skip_btn).setEnabled(false);
     }
 
+    private long lastToastTime = 0;
+    private static final long TOAST_COOLDOWN_MS = 2000; // 2 seconds
+
     public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if (currentToast != null) {
+            currentToast.cancel();
+        }
+        currentToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        currentToast.show();
     }
 
     private void updateDiceDisplay() {
@@ -669,25 +722,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return;
         }
-
-//        if (gameEngine.getGameState() == GameEngine.GameState.GAME_OVER) {
-//            String winner = gameEngine.getWinner();
-//            TextView diceInstruction = findViewById(R.id.dice_instruction);
-//            if (winner.equals("Draw")) {
-//                diceInstruction.setText("Game Over: It's a Draw!");
-//            } else {
-//                diceInstruction.setText(String.format("Game Over: Player %s Won!", winner));
-//            }
-//            Button rollBtn = findViewById(R.id.roll_btn);
-//            rollBtn.setEnabled(false);
-//            rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.controlBackground));
-//            playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
-//            playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
-//            if (isOnlineMode) {
-//                firebaseManager.endGame();
-//            }
-//            return;
-//        }
 
         // Set isMyTurn for Player vs AI mode
         if (isVsAI && !isOnlineMode) {
@@ -809,28 +843,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private void handleCellClick(int row, int col) {
-//        if (isVsAI && gameEngine.getCurrentPlayer().equals("O")) {
-//            showToast("AI's turn. Please wait.");
-//            return;
-//        }
-//
-//        if (isOnlineMode) {
-//            if (isMyTurn && gameEngine.isValidMove(row, col)) {
-//                firebaseManager.sendMove(row, col);
-//                gameEngine.makeMove(row, col);
-//                updateBoardState();
-//            } else {
-//                showToast("Not your turn or invalid move");
-//            }
-//        } else {
-//            if (gameEngine.isValidMove(row, col)) {
-//                gameEngine.makeMove(row, col);
-//                updateBoardState();
-//            }
-//        }
-//    }
-
     private void showNoMovesDialog() {
         NoMovesDialogFragment dialog = new NoMovesDialogFragment();
         dialog.setGameEngine(gameEngine);
@@ -861,6 +873,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupButtonListeners() {
+
         findViewById(R.id.roll_btn).setOnClickListener(v -> {
             if (isOnlineMode && !isMyTurn) {
                 showToast("Not your turn!");
@@ -869,13 +882,7 @@ public class MainActivity extends AppCompatActivity {
             if (gameEngine.rollDice()) {
                 showNoMovesDialog();
                 if (isOnlineMode) {
-                    // No valid moves, end turn
-                    Map<String, Object> updates = new HashMap<>();
-                    updates.put("currentPlayer", gameEngine.getCurrentPlayer().equals("X") ? "O" : "X");
-                    updates.put("dice", new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0)));
-                    updates.put("currentCombo", "");
-                    firebaseManager.getDbRef().child("games").child(firebaseManager.getGameId()).updateChildren(updates)
-                            .addOnFailureListener(e -> showToast("Failed to end turn: " + e.getMessage()));
+                    firebaseManager.sendMove(-1, -1); // End turn
                 }
             }
             updateBoardState();
@@ -893,13 +900,7 @@ public class MainActivity extends AppCompatActivity {
             if (gameEngine.skipRolls()) {
                 showNoMovesDialog();
                 if (isOnlineMode) {
-                    // No valid moves, end turn
-                    Map<String, Object> updates = new HashMap<>();
-                    updates.put("currentPlayer", gameEngine.getCurrentPlayer().equals("X") ? "O" : "X");
-                    updates.put("dice", new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0)));
-                    updates.put("currentCombo", "");
-                    firebaseManager.getDbRef().child("games").child(firebaseManager.getGameId()).updateChildren(updates)
-                            .addOnFailureListener(e -> showToast("Failed to end turn: " + e.getMessage()));
+                    firebaseManager.sendMove(-1, -1); // End turn
                 }
             }
             updateBoardState();
@@ -923,48 +924,4 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.toggle_hints).setOnClickListener(v -> showMoreOptions());
     }
 
-//    private void setupButtonListeners() {
-//        findViewById(R.id.roll_btn).setOnClickListener(v -> {
-//            if (isOnlineMode && !isMyTurn) {
-//                showToast("Not your turn!");
-//                return;
-//            }
-//            if (gameEngine.rollDice()) {
-//                showNoMovesDialog();
-//            }
-//            updateBoardState();
-//            updateDiceDisplay();
-//            if (isOnlineMode) {
-//                firebaseManager.updateDiceState(gameEngine.getDiceValues(), gameEngine.getCurrentCombination());
-//            }
-//        });
-//
-//        findViewById(R.id.skip_btn).setOnClickListener(v -> {
-//            if (isOnlineMode && !isMyTurn) {
-//                showToast("Not your turn!");
-//                return;
-//            }
-//            if (gameEngine.skipRolls()) {
-//                showNoMovesDialog();
-//            }
-//            updateBoardState();
-//            if (isOnlineMode) {
-//                firebaseManager.updateDiceState(gameEngine.getDiceValues(), gameEngine.getCurrentCombination());
-//            }
-//        });
-//
-//        findViewById(R.id.new_game).setOnClickListener(v -> {
-//            if (isOnlineMode) {
-//                firebaseManager.endGame();
-//                setupOnlineGame();
-//            } else {
-//                gameEngine.newGame();
-//                updateBoardState();
-//                updateDiceDisplay();
-//                findViewById(R.id.skip_btn).setEnabled(false);
-//            }
-//        });
-//
-//        findViewById(R.id.toggle_hints).setOnClickListener(v -> showMoreOptions());
-//    }
 }
