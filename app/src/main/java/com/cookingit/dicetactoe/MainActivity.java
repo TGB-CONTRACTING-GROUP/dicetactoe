@@ -785,26 +785,58 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
             cell.setText(gameEngine.getCellValue(row, col));
         }
 
+        // Always update score displays regardless of game state
+        playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
+        playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
+
         if (gameEngine.getGameState() == GameEngine.GameState.GAME_OVER) {
             String winner = gameEngine.getWinner();
             TextView diceInstruction = findViewById(R.id.dice_instruction);
-            if ("Draw".equals(winner)) { // Safe comparison: avoids NullPointerException
+            // Update the instruction text for game over state
+            if ("Draw".equals(winner)) {
+                currentPlayerText.setText("Game Over: It's a Draw!");
                 diceInstruction.setText("Game Over: It's a Draw!");
             } else if (winner != null) {
+                currentPlayerText.setText(String.format("Game Over: Player %s Won!", winner));
                 diceInstruction.setText(String.format("Game Over: Player %s Won!", winner));
             } else {
+                currentPlayerText.setText("Game Over");
                 diceInstruction.setText("Game Over: Ended");
             }
             Button rollBtn = findViewById(R.id.roll_btn);
             rollBtn.setEnabled(false);
             rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.controlBackground));
-            playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
-            playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
+
+//            playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
+//            playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
+
             if (isOnlineMode) {
+                firebaseManager.updateScores(gameEngine.getPlayerXScore(), gameEngine.getPlayerOScore());
                 firebaseManager.endGame();
             }
             return;
         }
+
+//        if (gameEngine.getGameState() == GameEngine.GameState.GAME_OVER) {
+//            String winner = gameEngine.getWinner();
+//            TextView diceInstruction = findViewById(R.id.dice_instruction);
+//            if ("Draw".equals(winner)) { // Safe comparison: avoids NullPointerException
+//                diceInstruction.setText("Game Over: It's a Draw!");
+//            } else if (winner != null) {
+//                diceInstruction.setText(String.format("Game Over: Player %s Won!", winner));
+//            } else {
+//                diceInstruction.setText("Game Over: Ended");
+//            }
+//            Button rollBtn = findViewById(R.id.roll_btn);
+//            rollBtn.setEnabled(false);
+//            rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.controlBackground));
+//            playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
+//            playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
+//            if (isOnlineMode) {
+//                firebaseManager.endGame();
+//            }
+//            return;
+//        }
 
         // Set isMyTurn for Player vs AI mode
         if (isVsAI && !isOnlineMode) {

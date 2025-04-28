@@ -286,6 +286,7 @@ public class FirebaseManager {
 
         gameRef = dbRef.child("games").child(gameId);
         gameListener = new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
@@ -297,56 +298,142 @@ public class FirebaseManager {
                     gameState.status = snapshot.child("status").getValue(String.class);
                     gameState.currentCombo = snapshot.child("currentCombo").getValue(String.class);
 
-                    // Parse board
-                    Map<String, String> board = new HashMap<>();
-                    for (DataSnapshot child : snapshot.child("board").getChildren()) {
-                        String key = child.getKey();
-                        String value = child.getValue(String.class);
-                        if (key != null && value != null) {
-                            board.put(key, value);
-                        }
+                    // Handle scores more explicitly
+                    if (snapshot.hasChild("playerXScore")) {
+                        gameState.playerXScore = snapshot.child("playerXScore").getValue(Integer.class);
+                        Log.d("FirebaseManager", "Player X Score from Firebase: " + gameState.playerXScore);
                     }
-                    gameState.board = board;
+
+                    if (snapshot.hasChild("playerOScore")) {
+                        gameState.playerOScore = snapshot.child("playerOScore").getValue(Integer.class);
+                        Log.d("FirebaseManager", "Player O Score from Firebase: " + gameState.playerOScore);
+                    }
+
+                    // Parse board
+                    try {
+                        Map<String, String> board = new HashMap<>();
+                        DataSnapshot boardSnapshot = snapshot.child("board");
+                        Log.d("FirebaseManager", "Board snapshot: " + boardSnapshot.getValue());
+                        for (DataSnapshot child : boardSnapshot.getChildren()) {
+                            String key = child.getKey();
+                            String value = child.getValue(String.class);
+                            if (key != null && value != null) {
+                                board.put(key, value);
+                            }
+                        }
+                        gameState.board = board;
+                    } catch (Exception e) {
+                        Log.e("FirebaseManager", "Error parsing board data", e);
+                        gameState.board = new HashMap<>();
+                    }
 
                     // Parse players
-                    Map<String, String> players = new HashMap<>();
-                    for (DataSnapshot child : snapshot.child("players").getChildren()) {
-                        String key = child.getKey();
-                        String value = child.getValue(String.class);
-                        if (key != null && value != null) {
-                            players.put(key, value);
+                    try {
+                        Map<String, String> players = new HashMap<>();
+                        DataSnapshot playersSnapshot = snapshot.child("players");
+                        Log.d("FirebaseManager", "Players snapshot: " + playersSnapshot.getValue());
+                        for (DataSnapshot child : playersSnapshot.getChildren()) {
+                            String key = child.getKey();
+                            String value = child.getValue(String.class);
+                            if (key != null && value != null) {
+                                players.put(key, value);
+                            }
                         }
+                        gameState.players = players;
+                    } catch (Exception e) {
+                        Log.e("FirebaseManager", "Error parsing players data", e);
+                        gameState.players = new HashMap<>();
                     }
-                    gameState.players = players;
 
                     // Handle dice which might be in different formats
-                    gameState.dice = snapshot.child("dice").getValue();
-
-                    // Check if game status is "player_left"
-                    if ("player_left".equals(gameState.status)) {
-                        String leftPlayer = snapshot.child("leftPlayer").getValue(String.class);
-                        if (leftPlayer != null && !leftPlayer.equals(playerId)) {
-                            activity.runOnUiThread(() -> {
-                                activity.showToast("Your opponent left the game. You win!");
-                                activity.displayGameLeftDialog(true);
-                            });
+                    try {
+                        Object diceObj = snapshot.child("dice").getValue();
+                        Log.d("FirebaseManager", "Dice snapshot type: " + (diceObj != null ? diceObj.getClass().getName() : "null"));
+                        Log.d("FirebaseManager", "Dice snapshot value: " + diceObj);
+                        gameState.dice = diceObj;
+                    } catch (Exception e) {
+                        Log.e("FirebaseManager", "Error parsing dice data", e);
+                        // Set default empty dice
+                        Map<String, Integer> defaultDice = new HashMap<>();
+                        for (int i = 0; i < 5; i++) {
+                            defaultDice.put(String.valueOf(i), 0);
                         }
+                        gameState.dice = defaultDice;
                     }
 
-                    if (gameState != null) {
-                        Log.d("FirebaseManager", "Deserialized gameState: board=" + gameState.board + ", status=" + gameState.status);
-                        activity.runOnUiThread(() -> {
-                            updateLocalGame(gameState);
-                            updateTurnStatus(gameState);
-                        });
-                    } else {
-                        Log.w("FirebaseManager", "Game state is null, skipping update");
-                    }
+                    // After successful parsing, update the game state
+                    activity.runOnUiThread(() -> {
+                        updateLocalGame(gameState);
+                        updateTurnStatus(gameState);
+                    });
                 } catch (Exception e) {
                     Log.e("FirebaseManager", "Error deserializing data", e);
-                    activity.runOnUiThread(() -> activity.showToast("Error parsing game data"));
+                    e.printStackTrace();
+                    activity.runOnUiThread(() -> activity.showToast("Error parsing game data: " + e.getMessage()));
                 }
             }
+
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                try {
+//                    Log.d("FirebaseManager", "Received snapshot: " + snapshot.getValue());
+//                    GameManager gameState = new GameManager();
+//
+//                    // Set the basic properties
+//                    gameState.currentPlayer = snapshot.child("currentPlayer").getValue(String.class);
+//                    gameState.status = snapshot.child("status").getValue(String.class);
+//                    gameState.currentCombo = snapshot.child("currentCombo").getValue(String.class);
+//
+//                    // Parse board
+//                    Map<String, String> board = new HashMap<>();
+//                    for (DataSnapshot child : snapshot.child("board").getChildren()) {
+//                        String key = child.getKey();
+//                        String value = child.getValue(String.class);
+//                        if (key != null && value != null) {
+//                            board.put(key, value);
+//                        }
+//                    }
+//                    gameState.board = board;
+//
+//                    // Parse players
+//                    Map<String, String> players = new HashMap<>();
+//                    for (DataSnapshot child : snapshot.child("players").getChildren()) {
+//                        String key = child.getKey();
+//                        String value = child.getValue(String.class);
+//                        if (key != null && value != null) {
+//                            players.put(key, value);
+//                        }
+//                    }
+//                    gameState.players = players;
+//
+//                    // Handle dice which might be in different formats
+//                    gameState.dice = snapshot.child("dice").getValue();
+//
+//                    // Check if game status is "player_left"
+//                    if ("player_left".equals(gameState.status)) {
+//                        String leftPlayer = snapshot.child("leftPlayer").getValue(String.class);
+//                        if (leftPlayer != null && !leftPlayer.equals(playerId)) {
+//                            activity.runOnUiThread(() -> {
+//                                activity.showToast("Your opponent left the game. You win!");
+//                                activity.displayGameLeftDialog(true);
+//                            });
+//                        }
+//                    }
+//
+//                    if (gameState != null) {
+//                        Log.d("FirebaseManager", "Deserialized gameState: board=" + gameState.board + ", status=" + gameState.status);
+//                        activity.runOnUiThread(() -> {
+//                            updateLocalGame(gameState);
+//                            updateTurnStatus(gameState);
+//                        });
+//                    } else {
+//                        Log.w("FirebaseManager", "Game state is null, skipping update");
+//                    }
+//                } catch (Exception e) {
+//                    Log.e("FirebaseManager", "Error deserializing data", e);
+//                    activity.runOnUiThread(() -> activity.showToast("Error parsing game data"));
+//                }
+//            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -360,15 +447,61 @@ public class FirebaseManager {
 
     private void updateLocalGame(GameManager remoteState) {
         if (remoteState.board == null) {
-            remoteState.board = new HashMap<>(); // Initialize empty board if null
+            remoteState.board = new HashMap<>();
             Log.w("FirebaseManager", "Remote board was null, initialized to empty map");
         }
+
+        // Update scores if they exist in remote state
+        Log.d("FirebaseManager", "Updating local scores - X: " + remoteState.playerXScore + ", O: " + remoteState.playerOScore);
+        gameEngine.setPlayerXScore(remoteState.playerXScore);
+        gameEngine.setPlayerOScore(remoteState.playerOScore);
+
         gameEngine.syncWithRemote(remoteState);
         activity.updateBoardState();
+
         if ("game_over".equals(remoteState.status)) {
-            activity.showToast("Game Over: " + (gameEngine.getWinner() != null ? "Player " + gameEngine.getWinner() + " wins!" : "Draw"));
+            String winnerMessage = "Game Over: ";
+            if (gameEngine.getWinner() != null) {
+                winnerMessage += "Player " + gameEngine.getWinner() + " wins!";
+            } else {
+                winnerMessage += "It's a Draw!";
+            }
+            activity.showToast(winnerMessage);
         }
     }
+
+//    private void updateLocalGame(GameManager remoteState) {
+//        if (remoteState.board == null) {
+//            remoteState.board = new HashMap<>();
+//            Log.w("FirebaseManager", "Remote board was null, initialized to empty map");
+//        }
+//
+//        // Update scores if they exist in remote state
+//        if (remoteState.playerXScore > 0 || remoteState.playerOScore > 0) {
+//            gameEngine.setPlayerXScore(remoteState.playerXScore);
+//            gameEngine.setPlayerOScore(remoteState.playerOScore);
+//        }
+//
+//        gameEngine.syncWithRemote(remoteState);
+//        activity.updateBoardState();
+//
+//        if ("game_over".equals(remoteState.status)) {
+//            activity.showToast("Game Over: " + (gameEngine.getWinner() != null ?
+//                    "Player " + gameEngine.getWinner() + " wins!" : "Draw"));
+//        }
+//    }
+
+//    private void updateLocalGame(GameManager remoteState) {
+//        if (remoteState.board == null) {
+//            remoteState.board = new HashMap<>(); // Initialize empty board if null
+//            Log.w("FirebaseManager", "Remote board was null, initialized to empty map");
+//        }
+//        gameEngine.syncWithRemote(remoteState);
+//        activity.updateBoardState();
+//        if ("game_over".equals(remoteState.status)) {
+//            activity.showToast("Game Over: " + (gameEngine.getWinner() != null ? "Player " + gameEngine.getWinner() + " wins!" : "Draw"));
+//        }
+//    }
 
     private void updateTurnStatus(GameManager gameState) {
         String currentPlayer = gameState.currentPlayer;
@@ -464,11 +597,65 @@ public class FirebaseManager {
         }
     }
 
+    public void updateScores(int playerXScore, int playerOScore) {
+        if (gameId == null) return;
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("playerXScore", playerXScore);
+        updates.put("playerOScore", playerOScore);
+
+        // Update scores in Firebase
+        dbRef.child("games").child(gameId).updateChildren(updates)
+                .addOnSuccessListener(aVoid ->
+                        Log.d("FirebaseManager", "Scores updated successfully"))
+                .addOnFailureListener(e -> {
+                    Log.e("FirebaseManager", "Failed to update scores: " + e.getMessage());
+                    activity.runOnUiThread(() ->
+                            activity.showToast("Failed to update scores: " + e.getMessage()));
+                });
+    }
+
+    // In FirebaseManager.java
     public void endGame() {
         if (gameId != null) {
-            dbRef.child("games").child(gameId).child("status").setValue("game_over");
+            Log.d("FirebaseManager", "Ending game with scores - X: " + gameEngine.getPlayerXScore() + ", O: " + gameEngine.getPlayerOScore());
+
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("status", "game_over");
+            updates.put("playerXScore", gameEngine.getPlayerXScore());
+            updates.put("playerOScore", gameEngine.getPlayerOScore());
+
+            dbRef.child("games").child(gameId).updateChildren(updates)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("FirebaseManager", "Game ended and scores updated successfully");
+                        // Force an immediate update to scores in case updateChildren callback happens before the listener
+                        updateScores(gameEngine.getPlayerXScore(), gameEngine.getPlayerOScore());
+                    })
+                    .addOnFailureListener(e ->
+                            Log.e("FirebaseManager", "Failed to end game: " + e.getMessage()));
         }
     }
+
+//    public void endGame() {
+//        if (gameId != null) {
+//            Map<String, Object> updates = new HashMap<>();
+//            updates.put("status", "game_over");
+//            updates.put("playerXScore", gameEngine.getPlayerXScore());
+//            updates.put("playerOScore", gameEngine.getPlayerOScore());
+//
+//            dbRef.child("games").child(gameId).updateChildren(updates)
+//                    .addOnSuccessListener(aVoid ->
+//                            Log.d("FirebaseManager", "Game ended and scores updated successfully"))
+//                    .addOnFailureListener(e ->
+//                            Log.e("FirebaseManager", "Failed to end game: " + e.getMessage()));
+//        }
+//    }
+
+//    public void endGame() {
+//        if (gameId != null) {
+//            dbRef.child("games").child(gameId).child("status").setValue("game_over");
+//        }
+//    }
 
     public void leaveGame() {
         if (gameId == null) return;
