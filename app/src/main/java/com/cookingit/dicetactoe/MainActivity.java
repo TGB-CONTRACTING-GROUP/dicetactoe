@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PvPGameOptionsDialogFragment.PvPGameOptionsListener {
 
     private GameEngine gameEngine;
     private GridLayout gameBoard;
@@ -309,17 +309,23 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-//    private void showPvPDifficultySelection() {
-//        String[] difficulties = {"Easy", "Medium", "Hard"};
-//        new AlertDialog.Builder(this)
-//                .setTitle("Select PvP Difficulty")
-//                .setItems(difficulties, (dialog, which) -> {
-//                    pvpDifficulty = difficulties[which].toLowerCase();
-//                    setupOnlineGame();
-//                })
-//                .setNegativeButton("Cancel", null)
-//                .show();
-//    }
+    // Add this method to display a "Leave Game" option in the PvP mode
+    private void showPvPGameOptions() {
+        if (!isOnlineMode) return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("PvP Game Options");
+
+        String[] options = {"Leave Game"};
+        builder.setItems(options, (dialog, which) -> {
+            if (which == 0) { // Leave Game
+                confirmLeaveGame();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
 
     private void showAIDifficultySelection() {
         String[] difficulties = {"Easy", "Medium", "Hard"};
@@ -434,6 +440,83 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    // Add this method to confirm if the player wants to leave
+    private void confirmLeaveGame() {
+        new AlertDialog.Builder(this)
+                .setTitle("Leave Game")
+                .setMessage("Are you sure you want to leave this game? Your opponent will win.")
+                .setPositiveButton("Leave", (dialog, which) -> {
+                    if (firebaseManager != null) {
+                        firebaseManager.leaveGame();
+                        displayGameLeftDialog(false);
+                    }
+                })
+                .setNegativeButton("Stay", null)
+                .show();
+    }
+
+    public void displayGameLeftDialog(boolean youWon) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Game Ended");
+
+        if (youWon) {
+            builder.setMessage("Your opponent left the game. You win!");
+        } else {
+            builder.setMessage("You left the game.");
+        }
+
+        builder.setPositiveButton("New Game", (dialog, which) -> {
+            if (isOnlineMode) {
+                if (firebaseManager != null) {
+                    firebaseManager.cleanup();
+                }
+                showPvPDifficultySelection();
+            } else {
+                startNewGame();
+            }
+        });
+
+        builder.setNegativeButton("Main Menu", (dialog, which) -> {
+            if (isOnlineMode && firebaseManager != null) {
+                firebaseManager.cleanup();
+            }
+            isOnlineMode = false;
+            showTrainingDifficultySelection();
+        });
+
+        builder.setCancelable(false);
+        builder.show();
+    }
+
+    // Override onDestroy to clean up Firebase connections
+    @Override
+    protected void onDestroy() {
+        if (isOnlineMode && firebaseManager != null) {
+            firebaseManager.cleanup();
+        }
+        super.onDestroy();
+    }
+
+    // Override onStop to update player status when app is in background
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // If we're in online mode, we should update our status to show we're not active
+        if (isOnlineMode && firebaseManager != null && !isFinishing()) {
+            // No need to fully leave the game, the heartbeat mechanism will handle temporary absence
+        }
+    }
+
+    // Override onResume to update player status when app comes to foreground
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // If we're in online mode, update our status to show we're active again
+        if (isOnlineMode && firebaseManager != null) {
+            // The next heartbeat will update our timestamp
+        }
     }
 
     private void startTimedMode() {
@@ -921,7 +1004,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.next_btn).setOnClickListener(v -> {
+            if (isOnlineMode) {
+                showPvPGameOptions();
+            } else {
+                // Handle other modes if needed
+            }
+        });
+
         findViewById(R.id.toggle_hints).setOnClickListener(v -> showMoreOptions());
     }
+
+    @Override
+    public void onLeaveGameSelected() {
+        if (firebaseManager != null) {
+            firebaseManager.leaveGame();
+            displayGameLeftDialog(false);
+        }
+    }
+
+    // Show options dialog when "Next" button is clicked in online mode
+    private void showPvPOptions() {
+        PvPGameOptionsDialogFragment dialog = new PvPGameOptionsDialogFragment();
+        dialog.setListener(this);
+        dialog.show(getSupportFragmentManager(), "PvPOptions");
+    }
+
 
 }
