@@ -19,7 +19,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import com.cookingit.dicetactoe.firebase.FirebaseManager;
+import com.cookingit.dicetactoe.firebase.GameManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import android.text.Spannable;
@@ -89,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
                     if (task.isSuccessful()) {
                         Log.d("DiceTacToe", "Anonymous sign-in successful");
                         isAuthenticated = true;
+
+                        // Clean up any old games that might be causing the bug
+                        cleanupOldGames();
+
                         setupButtonListeners();
                         showTrainingDifficultySelection();
                     } else {
@@ -102,26 +109,6 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
                     }
                 });
     }
-
-//    private void trySignInAnonymously(int attempt) {
-//        FirebaseAuth.getInstance().signInAnonymously()
-//                .addOnCompleteListener(this, task -> {
-//                    if (task.isSuccessful()) {
-//                        Log.d("DiceTacToe", "Anonymous sign-in successful");
-//                        setupButtonListeners();
-//                        // Start in Training mode by default
-//                        showTrainingDifficultySelection();
-//                    } else {
-//                        Log.e("DiceTacToe", "Anonymous sign-in failed", task.getException());
-//                        if (attempt < MAX_AUTH_RETRIES - 1) {
-//                            Log.d("DiceTacToe", "Retrying sign-in, attempt " + (attempt + 1));
-//                            trySignInAnonymously(attempt + 1);
-//                        } else {
-//                            showToast("Authentication failed after " + MAX_AUTH_RETRIES + " attempts. Please check your setup.");
-//                        }
-//                    }
-//                });
-//    }
 
     private void initializeUIComponents() {
         gameBoard = findViewById(R.id.game_board);
@@ -648,7 +635,20 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
             showToast("Please wait, signing in...");
             trySignInAnonymouslyForOnlineGame(0);
         } else {
-            initializeOnlineGame();
+            // First clean up any problematic games involving this player
+            if (firebaseManager != null) {
+                firebaseManager.cleanupPlayerGames();
+            } else {
+                // Create a fresh Firebase Manager
+                firebaseManager = new FirebaseManager(this, gameEngine);
+                // Clean up any leftover games
+                firebaseManager.cleanupPlayerGames();
+            }
+
+            // After a short delay to allow cleanup to complete
+            new android.os.Handler().postDelayed(() -> {
+                initializeOnlineGame();
+            }, 1000); // 1 second delay
         }
     }
 
@@ -677,7 +677,13 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
             return;
         }
         isOnlineMode = true;
-        firebaseManager = new FirebaseManager(this, gameEngine);
+
+        // If we already have a Firebase manager, reinitialize it to clear any old state
+        if (firebaseManager == null) {
+            firebaseManager = new FirebaseManager(this, gameEngine);
+        }
+
+        // Start finding or creating a game
         firebaseManager.findOrCreateGame();
         findViewById(R.id.skip_btn).setEnabled(false);
         updateBoardState();
@@ -716,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
         currentToast.show();
     }
 
-    private void updateDiceDisplay() {
+    public void updateDiceDisplay() {
         diceContainer.removeAllViews();
         List<Integer> diceValues = gameEngine.getDiceValues(); // Changed from int[]
         //int[] diceValues = gameEngine.getDiceValues();
@@ -817,27 +823,6 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
             return;
         }
 
-//        if (gameEngine.getGameState() == GameEngine.GameState.GAME_OVER) {
-//            String winner = gameEngine.getWinner();
-//            TextView diceInstruction = findViewById(R.id.dice_instruction);
-//            if ("Draw".equals(winner)) { // Safe comparison: avoids NullPointerException
-//                diceInstruction.setText("Game Over: It's a Draw!");
-//            } else if (winner != null) {
-//                diceInstruction.setText(String.format("Game Over: Player %s Won!", winner));
-//            } else {
-//                diceInstruction.setText("Game Over: Ended");
-//            }
-//            Button rollBtn = findViewById(R.id.roll_btn);
-//            rollBtn.setEnabled(false);
-//            rollBtn.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.controlBackground));
-//            playerXScoreText.setText(String.valueOf(gameEngine.getPlayerXScore()));
-//            playerOScoreText.setText(String.valueOf(gameEngine.getPlayerOScore()));
-//            if (isOnlineMode) {
-//                firebaseManager.endGame();
-//            }
-//            return;
-//        }
-
         // Set isMyTurn for Player vs AI mode
         if (isVsAI && !isOnlineMode) {
             isMyTurn = gameEngine.getCurrentPlayer().equals("X"); // Player X is the human player
@@ -921,6 +906,52 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
                 rollAIDice(); // Continue rolling
             }
         }, 1000);
+    }
+
+    private void cleanupOldGames() {
+        if (!isAuthenticated) return;
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+
+        String currentUserId = user.getUid();
+
+        // Get reference to the database
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+
+        // Query all games that are in "player_left" state
+        dbRef.child("games")
+                .orderByChild("status")
+                .equalTo("player_left")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        DataSnapshot snapshot = task.getResult();
+
+                        for (DataSnapshot gameSnapshot : snapshot.getChildren()) {
+                            GameManager game = gameSnapshot.getValue(GameManager.class);
+                            if (game != null && game.getPlayers() != null) {
+                                // Check if current user is in this game
+                                boolean userInGame = false;
+                                for (Map.Entry<String, String> entry : game.getPlayers().entrySet()) {
+                                    if (entry.getKey().equals(currentUserId)) {
+                                        userInGame = true;
+                                        break;
+                                    }
+                                }
+
+                                // If user is in this game, mark it as "game_over" instead of "player_left"
+                                if (userInGame) {
+                                    gameSnapshot.getRef().child("status").setValue("game_over");
+                                    Log.d("DiceTacToe", "Cleaned up old game: " + gameSnapshot.getKey());
+                                }
+                            }
+                        }
+                        showToast("Game state cleaned up successfully");
+                    } else {
+                        Log.d("DiceTacToe", "No games to clean up or error occurred");
+                    }
+                });
     }
 
     private void placeAIMark() {
@@ -1025,9 +1056,22 @@ public class MainActivity extends AppCompatActivity implements PvPGameOptionsDia
         });
 
         findViewById(R.id.new_game).setOnClickListener(v -> {
-            if (isOnlineMode) {
-                firebaseManager.endGame();
-                setupOnlineGame();
+            if (isOnlineMode && firebaseManager != null) {
+                // Add a toast to indicate we're processing
+                showToast("Setting up new game...");
+
+                // Manually clear the winner state in GameEngine first
+                if (gameEngine.getWinner() != null) {
+                    // Store the winner for score calculation
+                    String previousWinner = gameEngine.getWinner();
+                    gameEngine.setWinner(null);
+
+                    // Use the new method to reset and create a fresh game
+                    firebaseManager.resetAndCreateNewGame();
+                } else {
+                    // No winner yet, just reset
+                    firebaseManager.resetAndCreateNewGame();
+                }
             } else {
                 gameEngine.newGame();
                 updateBoardState();
